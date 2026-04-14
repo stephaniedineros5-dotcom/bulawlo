@@ -34,24 +34,16 @@ body {
 h1 { color: #ff4d6d; }
 p { color: #444; }
 
-/* Buttons */
 button {
     padding: 10px 20px;
-    border: none;
     border-radius: 20px;
+    border: none;
     margin: 10px;
     cursor: pointer;
 }
 
 .yes { background: #ff4d6d; color: white; }
 .no { background: #ddd; }
-
-/* Text */
-#result {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #ff4d6d;
-}
 
 /* FINAL SCREEN */
 #finalScreen {
@@ -66,22 +58,11 @@ button {
     align-items: center;
     text-align: center;
     color: white;
-    animation: fadeIn 1s ease;
+    flex-direction: column;
 }
 
 #finalScreen h1 {
     font-size: 28px;
-}
-
-/* Animations */
-@keyframes float {
-    0%,100% {transform: translateY(0);}
-    50% {transform: translateY(-10px);}
-}
-
-@keyframes fadeIn {
-    from {opacity:0;}
-    to {opacity:1;}
 }
 
 /* Hearts */
@@ -91,21 +72,34 @@ button {
     animation: floatUp 6s linear infinite;
 }
 
-@keyframes floatUp {
-    0% {transform: translateY(100vh); opacity:0;}
-    50% {opacity:1;}
-    100% {transform: translateY(-10vh); opacity:0;}
-}
-
 /* Flowers */
 .flower {
     position: absolute;
     animation: fall 8s linear infinite;
 }
 
+/* Confetti */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: fall 3s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {transform: translateY(100vh); opacity:0;}
+    50% {opacity:1;}
+    100% {transform: translateY(-10vh); opacity:0;}
+}
+
 @keyframes fall {
     0% {transform: translateY(-10vh);}
     100% {transform: translateY(110vh);}
+}
+
+@keyframes float {
+    0%,100% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
 }
 </style>
 </head>
@@ -129,19 +123,20 @@ button {
 <!-- FINAL SCREEN -->
 <div id="finalScreen">
     <h1>
-        💖 You’re really special to me 💖 <br><br>
-        and I’m really glad I have you 😊
+        💖 I’m so grateful that I met you 💖 <br><br>
+        you mean more to me than you probably realize 😊
     </h1>
+    <p>✨ Thank you for existing ✨</p>
 </div>
 
-<!-- MUSIC (manual play) -->
+<!-- MUSIC -->
 <audio id="music" loop>
 <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
 </audio>
 
 <script>
 
-/* TYPING EFFECT */
+/* Typing effect */
 function typeText(text, delay) {
     let i = 0;
     let result = document.getElementById("result");
@@ -154,10 +149,11 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY FLOW */
+/* Story */
 function startStory() {
 
-    document.getElementById("music").play();
+    let music = document.getElementById("music");
+    music.play().catch(()=>{});
 
     typeText("Wait… don’t go yet 😳💖", 40);
 
@@ -169,18 +165,23 @@ function startStory() {
 
     setTimeout(()=>{
         document.getElementById("finalScreen").style.display = "flex";
+        launchConfetti();
     }, 13000);
 }
 
-/* NO BUTTON RUN AWAY */
+/* NO BUTTON FIX */
 let noBtn = document.getElementById("noBtn");
+
 noBtn.addEventListener("mouseover", () => {
-    noBtn.style.position = "absolute";
-    noBtn.style.left = Math.random()*80 + "vw";
-    noBtn.style.top = Math.random()*80 + "vh";
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
 });
 
-/* HEARTS */
+/* Hearts */
 setInterval(() => {
     let heart = document.createElement("div");
     heart.className = "heart";
@@ -191,7 +192,7 @@ setInterval(() => {
     setTimeout(()=> heart.remove(), 6000);
 }, 200);
 
-/* FLOWERS */
+/* Flowers */
 setInterval(() => {
     let flower = document.createElement("div");
     flower.className = "flower";
@@ -202,6 +203,18 @@ setInterval(() => {
     setTimeout(()=> flower.remove(), 8000);
 }, 600);
 
+/* Confetti */
+function launchConfetti() {
+    for (let i = 0; i < 80; i++) {
+        let confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = Math.random()*100 + "vw";
+        confetti.style.background = ["#fff","#ff4d6d","#ffd1dc"][Math.floor(Math.random()*3)];
+        document.body.appendChild(confetti);
+
+        setTimeout(()=> confetti.remove(), 3000);
+    }
+}
 </script>
 
 </body>
