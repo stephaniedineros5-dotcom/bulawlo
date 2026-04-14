@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Important Message 😏</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #89f7fe, #66a6ff);
+    overflow: hidden;
+}
+
+/* Center */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Card */
+.card {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-width: 350px;
+}
+
+h1 { color: #333; }
+
+/* Buttons */
+button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.yes { background: #4CAF50; color: white; }
+.no { background: #ddd; }
+
+/* Text */
+#text {
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+/* FINAL SCREEN */
+#final {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: #111;
+    color: white;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+#final h1 {
+    font-size: 30px;
+}
+
+/* Floating 😂 */
+.lol {
+    position: absolute;
+    animation: floatUp 5s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {transform: translateY(100vh); opacity:0;}
+    50% {opacity:1;}
+    100% {transform: translateY(-10vh); opacity:0;}
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+    <div class="card">
+
+        <h1 id="title">Hi 👋</h1>
+        <p id="desc">May sasabihin ako… 😏</p>
+
+        <button class="yes" onclick="nextStep()">Hello 👋</button>
+
+        <div id="choices" style="display:none;">
+            <p><b>Pwede pautang? 😭💸</b></p>
+
+            <button class="yes" onclick="yesClick()">Oo 😇</button>
+            <button class="no" id="noBtn">No 😅</button>
+        </div>
+
+        <p id="text"></p>
+
+    </div>
+</div>
+
+<!-- FINAL -->
+<div id="final">
+    <h1>HAHAHAHA 😂💀</h1>
+    <p>Alam ko na agad sagot mo eh 😭</p>
+    <p>Pero okay lang… sanay na ako 😌</p>
+    <p><b>Pero thank you for being a real one 💙</b></p>
+</div>
+
+<script>
+
+/* Step 1 */
+function nextStep() {
+    document.getElementById("title").innerHTML = "Hello 😏";
+    document.getElementById("desc").innerHTML = "Diretso na tayo… 😌";
+
+    document.querySelector(".yes").style.display = "none";
+    document.getElementById("choices").style.display = "block";
+}
+
+/* YES CLICK */
+function yesClick() {
+
+    document.getElementById("text").innerHTML = "WAIT… TOTOO BA TO?? 😳";
+
+    setTimeout(()=>{
+        document.getElementById("text").innerHTML = "Parang may mali ah 🤨";
+    },2000);
+
+    setTimeout(()=>{
+        document.getElementById("text").innerHTML = "Ikaw ba yan o clone mo? 😂";
+    },4000);
+
+    setTimeout(()=>{
+        document.getElementById("text").innerHTML = "Sige na nga… joke lang 😭";
+    },6000);
+
+    setTimeout(()=>{
+        document.getElementById("final").style.display = "flex";
+    },8000);
+
+}
+
+/* NO BUTTON RUN AWAY 😂 */
+let noBtn = document.getElementById("noBtn");
+
+noBtn.addEventListener("mouseover", () => {
+    let x = Math.random() * (window.innerWidth - 100);
+    let y = Math.random() * (window.innerHeight - 50);
+
+    noBtn.style.position = "fixed";
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+});
+
+/* EXTRA TROLL: PAG PININDOT BACKGROUND 😂 */
+document.body.addEventListener("click", (e) => {
+    if(e.target.tagName !== "BUTTON"){
+        document.getElementById("text").innerHTML = "Hoy focus ka dito 😭";
+    }
+});
+
+/* Floating emojis */
+setInterval(()=>{
+    let lol = document.createElement("div");
+    lol.className = "lol";
+    lol.innerHTML = ["😂","💀","😭"][Math.floor(Math.random()*3)];
+    lol.style.left = Math.random()*100 + "vw";
+    lol.style.fontSize = (20 + Math.random()*20) + "px";
+    document.body.appendChild(lol);
+
+    setTimeout(()=>lol.remove(),5000);
+},400);
+
+</script>
+
+</body>
+</html>
