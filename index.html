@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For You 💖</title>
+<title>For Someone Special 💖</title>
 
 <style>
 body {
@@ -12,7 +12,7 @@ body {
     overflow: hidden;
 }
 
-/* 💌 Container */
+/* Container */
 .container {
     display: flex;
     justify-content: center;
@@ -20,7 +20,7 @@ body {
     height: 100vh;
 }
 
-/* 💖 Card */
+/* Card */
 .card {
     background: rgba(255,255,255,0.9);
     padding: 40px;
@@ -31,61 +31,81 @@ body {
     animation: float 3s ease-in-out infinite;
 }
 
-h1 {
-    color: #ff4d6d;
-}
+h1 { color: #ff4d6d; }
+p { color: #444; }
 
-p {
-    color: #444;
-}
-
-/* 💖 Buttons */
+/* Buttons */
 button {
     padding: 10px 20px;
     border: none;
     border-radius: 20px;
     margin: 10px;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.yes {
-    background: #ff4d6d;
+.yes { background: #ff4d6d; color: white; }
+.no { background: #ddd; }
+
+/* Text */
+#result {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ff4d6d;
+}
+
+/* FINAL SCREEN */
+#finalScreen {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background: linear-gradient(135deg, #ff758c, #ff7eb3);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     color: white;
+    animation: fadeIn 1s ease;
 }
 
-.no {
-    background: #ddd;
+#finalScreen h1 {
+    font-size: 28px;
 }
 
-/* 💖 Floating hearts */
+/* Animations */
+@keyframes float {
+    0%,100% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+}
+
+@keyframes fadeIn {
+    from {opacity:0;}
+    to {opacity:1;}
+}
+
+/* Hearts */
 .heart {
     position: absolute;
     color: #ff4d6d;
     animation: floatUp 6s linear infinite;
 }
 
-/* 🌸 Flowers */
-.flower {
-    position: absolute;
-    animation: fall 8s linear infinite;
-}
-
-/* 💫 Animations */
 @keyframes floatUp {
     0% {transform: translateY(100vh); opacity:0;}
     50% {opacity:1;}
     100% {transform: translateY(-10vh); opacity:0;}
 }
 
+/* Flowers */
+.flower {
+    position: absolute;
+    animation: fall 8s linear infinite;
+}
+
 @keyframes fall {
     0% {transform: translateY(-10vh);}
     100% {transform: translateY(110vh);}
-}
-
-@keyframes float {
-    0%,100% {transform: translateY(0);}
-    50% {transform: translateY(-10px);}
 }
 </style>
 </head>
@@ -94,41 +114,73 @@ button {
 
 <div class="container">
     <div class="card">
-        <h1>Hi 💖</h1>
-        <p>
-            I just want to say... you make my days a little brighter 🌸✨  
-        </p>
+        <h1>Hi Bulawlo 💖</h1>
+        <p>You make my days a little brighter 🌸✨</p>
 
         <p><b>Can I make you smile today? 😊</b></p>
 
-        <button class="yes" onclick="yesClick()">Yes 💖</button>
+        <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
 
         <p id="result"></p>
     </div>
 </div>
 
-<!-- 🎶 Music -->
-<audio autoplay loop>
-    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+<!-- FINAL SCREEN -->
+<div id="finalScreen">
+    <h1>
+        💖 You’re really special to me 💖 <br><br>
+        and I’m really glad I have you 😊
+    </h1>
+</div>
+
+<!-- MUSIC (manual play) -->
+<audio id="music" loop>
+<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
 </audio>
 
 <script>
-function yesClick() {
-    document.getElementById("result").innerHTML =
-    "Aww 🥺💖 Thank you... that means a lot to me 💕";
+
+/* TYPING EFFECT */
+function typeText(text, delay) {
+    let i = 0;
+    let result = document.getElementById("result");
+    result.innerHTML = "";
+
+    let interval = setInterval(() => {
+        result.innerHTML += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+    }, delay);
 }
 
-/* 😏 NO button umiilag */
-let noBtn = document.getElementById("noBtn");
+/* STORY FLOW */
+function startStory() {
 
+    document.getElementById("music").play();
+
+    typeText("Wait… don’t go yet 😳💖", 40);
+
+    setTimeout(()=> typeText("I just wanted to tell you something… 🌸", 40), 2000);
+    setTimeout(()=> typeText("I really enjoy talking to you 💬", 40), 4000);
+    setTimeout(()=> typeText("You make things feel lighter ✨", 40), 6000);
+    setTimeout(()=> typeText("And honestly… 😳", 40), 8000);
+    setTimeout(()=> typeText("You became someone I genuinely care about 💖", 40), 10000);
+
+    setTimeout(()=>{
+        document.getElementById("finalScreen").style.display = "flex";
+    }, 13000);
+}
+
+/* NO BUTTON RUN AWAY */
+let noBtn = document.getElementById("noBtn");
 noBtn.addEventListener("mouseover", () => {
     noBtn.style.position = "absolute";
-    noBtn.style.left = Math.random() * 80 + "vw";
-    noBtn.style.top = Math.random() * 80 + "vh";
+    noBtn.style.left = Math.random()*80 + "vw";
+    noBtn.style.top = Math.random()*80 + "vh";
 });
 
-/* 💖 Hearts */
+/* HEARTS */
 setInterval(() => {
     let heart = document.createElement("div");
     heart.className = "heart";
@@ -137,9 +189,9 @@ setInterval(() => {
     heart.style.fontSize = (20 + Math.random()*20) + "px";
     document.body.appendChild(heart);
     setTimeout(()=> heart.remove(), 6000);
-}, 300);
+}, 200);
 
-/* 🌸 Flowers */
+/* FLOWERS */
 setInterval(() => {
     let flower = document.createElement("div");
     flower.className = "flower";
@@ -148,7 +200,8 @@ setInterval(() => {
     flower.style.fontSize = (20 + Math.random()*20) + "px";
     document.body.appendChild(flower);
     setTimeout(()=> flower.remove(), 8000);
-}, 800);
+}, 600);
+
 </script>
 
 </body>
