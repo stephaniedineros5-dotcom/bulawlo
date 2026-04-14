@@ -14,7 +14,7 @@ body {
     overflow: hidden;
 }
 
-/* Container */
+/* CENTER */
 .container {
     display: flex;
     justify-content: center;
@@ -22,7 +22,7 @@ body {
     height: 100vh;
 }
 
-/* Card (Glass effect) */
+/* CARD */
 .card {
     position: relative;
     background: rgba(255,255,255,0.3);
@@ -34,15 +34,21 @@ body {
     max-width: 350px;
 }
 
+/* TEXT */
 h1 { color: #ff4d6d; }
 p { color: #333; }
 
-/* Buttons */
+/* BUTTONS */
+.btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
 button {
     padding: 12px 25px;
     border-radius: 25px;
     border: none;
-    margin: 10px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
@@ -52,14 +58,14 @@ button:hover {
     transform: scale(1.1);
 }
 
-.yes { 
+.yes {
     background: linear-gradient(45deg,#ff4d6d,#ff8fab);
     color: white;
 }
 
-.no { 
+.no {
     background: #eee;
-    position: absolute;
+    position: relative;
 }
 
 /* FINAL SCREEN */
@@ -82,7 +88,7 @@ button:hover {
 
 .show { opacity:1; }
 
-/* Glow */
+/* GLOW */
 .glow {
     animation: glow 2s infinite alternate;
 }
@@ -102,7 +108,7 @@ button:hover {
     100% { transform: translateY(110vh); opacity:0; }
 }
 
-/* FLOATING LIGHTS */
+/* LIGHTS */
 .light {
     position: absolute;
     border-radius: 50%;
@@ -126,8 +132,10 @@ button:hover {
 
         <p><b>Can I tell you something? 😊</b></p>
 
-        <button class="yes" onclick="startStory()">Yes 💖</button>
-        <button class="no" id="noBtn">No 😅</button>
+        <div class="btns">
+            <button class="yes" onclick="startStory()">Yes 💖</button>
+            <button class="no" id="noBtn">No 😅</button>
+        </div>
 
         <p id="result"></p>
     </div>
@@ -145,7 +153,7 @@ button:hover {
 
 <script>
 
-/* typing */
+/* TEXT EFFECT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -158,7 +166,7 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* story */
+/* STORY */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
 
@@ -203,19 +211,22 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON FIX */
+/* NO BUTTON (CLICK → ILAG, STAYS INSIDE CARD) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
 
-btn.style.top = "120px";
-btn.style.left = "120px";
+btn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-btn.addEventListener("mouseover",()=>{
     let maxX = card.clientWidth - btn.offsetWidth;
     let maxY = card.clientHeight - btn.offsetHeight;
 
-    btn.style.left = Math.random()*maxX + "px";
-    btn.style.top = Math.random()*maxY + "px";
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
 });
 
 /* FLOWERS */
