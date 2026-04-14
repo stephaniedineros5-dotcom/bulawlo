@@ -32,6 +32,8 @@ body {
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     max-width: 350px;
+    position: relative;
+    z-index: 10;
 }
 
 /* TEXT */
@@ -97,10 +99,10 @@ button:hover {
     to {text-shadow:0 0 25px #fff;}
 }
 
-/* FLOWERS */
-.flower {
+.flower, .light {
     position: absolute;
-    animation: fall linear infinite;
+    pointer-events: none; /* 🔥 eto yung fix */
+}
 }
 @keyframes fall {
     0% { transform: translateY(-10vh); opacity:0; }
