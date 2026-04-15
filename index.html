@@ -20,25 +20,51 @@ body{
 }
 
 .card{
-    background:rgba(255,255,255,0.9);
+    position:relative;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter: blur(12px);
     padding:40px;
     border-radius:25px;
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
+    animation:fadeIn 1.5s ease;
+    transition:0.4s;
+}
+
+.card:hover{
+    transform:scale(1.03);
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeIn{
+    from{opacity:0;transform:translateY(30px);}
+    to{opacity:1;transform:translateY(0);}
 }
 
 button{
-    padding:10px 20px;
+    padding:12px 22px;
     border-radius:20px;
     border:none;
     margin:10px;
     cursor:pointer;
     font-weight:bold;
+    transition:0.3s;
 }
 
-.yes{background:#ff4d6d;color:white;}
-.no{background:#ddd;}
+button:hover{
+    transform:scale(1.08);
+}
+
+.yes{
+    background:#ff4d6d;
+    color:white;
+    box-shadow:0 0 10px #ff4d6d;
+}
+
+.no{
+    background:#ddd;
+}
 
 #pinScreen, #finalScreen{
     position:fixed;
@@ -56,10 +82,17 @@ button{
 #finalText{
     font-size:28px;
     max-width:80%;
+    line-height:1.6;
 }
 
 .bigText{
     font-size:45px;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 10px #ff4d6d; }
+    to{ text-shadow:0 0 30px #ff99aa, 0 0 50px #ff4d6d; }
 }
 
 .heart{
@@ -78,7 +111,7 @@ button{
 
 <div class="container">
     <div class="card" id="card">
-        <h1>Hi, Bulawlo 💖</h1>
+        <h1>Hi 💖</h1>
         <p>You make my days brighter 🌸</p>
 
         <p><b>Can I make you smile today? 😊</b></p>
@@ -86,7 +119,6 @@ button{
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
 
-        
         <p id="result"></p>
     </div>
 </div>
@@ -106,18 +138,13 @@ button{
 
 /* STORY */
 function startStory(){
-    playMusic();
-
-    // backup trigger for strict browsers (iPhone etc.)
-    document.body.addEventListener("click", playMusic, { once:true });
-
     let r=document.getElementById("result");
 
     let msgs=[
         "Wait… don’t go yet 😳",
         "I want to tell you something...",
-        "and I hope you listen...",
-        "because this means a lot to me 💖"
+        "And I hope you listen...",
+        "Because this means a lot to me 💖"
     ];
 
     let i=0;
@@ -145,7 +172,7 @@ function checkPin(){
     }else{
         attempts++;
         if(attempts==1){
-            document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
+            document.getElementById("hint").innerText="Hint: 1 = I, 4 = Love, 3 = You 😳";
         }else{
             alert("Try again 😅");
         }
@@ -161,39 +188,29 @@ function showFinal(){
 
     let lines=[
         "Hey...",
-        "",
         "I’ve been wanting to say this for a while...",
-        "",
-        "You became someone really important to me.",
-        "",
+        "You’ve become someone really important to me.",
         "You make my days better.",
         "You make me smile.",
-        "",
         "And I don’t want to hide it anymore...",
-        "",
         "I love you 💖",
-        "",
         "Not just a little...",
-        "but more than I expected.",
-        "",
+        "But more than I expected.",
         "So please...",
-        "",
-        "stay with me a little longer...",
-        "",
-        "Sayang...",
-        "",
-        "luv yah 💖"
+        "Stay with me a little longer...",
+        "Don’t go...",
+        "I love you 💖"
     ];
 
     let i=0;
 
     function next(){
         if(i<lines.length){
-            text.innerHTML=lines[i];
+            text.innerHTML += lines[i] + "<br>";
             i++;
-            setTimeout(next,2300);
+            setTimeout(next,2000);
         }else{
-            text.className="bigText";
+            text.classList.add("bigText");
         }
     }
 
@@ -204,16 +221,48 @@ function showFinal(){
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
-btn.addEventListener("mouseover",()=>{
-    let rect=card.getBoundingClientRect();
+let messages=[
+    "Are you sure? 😢",
+    "That’s kinda sad 💔",
+    "Even just a little? 🥺",
+    "Please? 😭",
+    "Come on 😅"
+];
 
-    let offsetX=Math.random()>0.5?120:-120;
-    let offsetY=(Math.random()*100)-50;
+let msgIndex=0;
+
+btn.addEventListener("mouseover", moveButton);
+btn.addEventListener("touchstart", moveButton);
+
+function moveButton(){
+    let result=document.getElementById("result");
+
+    result.innerText = messages[msgIndex];
+    msgIndex = (msgIndex+1) % messages.length;
+
+    let cardRect = card.getBoundingClientRect();
+
+    let x, y;
+    let safe = false;
+
+    while(!safe){
+        x = Math.random() * (window.innerWidth - btn.offsetWidth);
+        y = Math.random() * (window.innerHeight - btn.offsetHeight);
+
+        if(
+            x < cardRect.left - 60 ||
+            x > cardRect.right + 60 ||
+            y < cardRect.top - 60 ||
+            y > cardRect.bottom + 60
+        ){
+            safe = true;
+        }
+    }
 
     btn.style.position="fixed";
-    btn.style.left=(rect.left+offsetX)+"px";
-    btn.style.top=(rect.top+offsetY)+"px";
-});
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+}
 
 /* HEARTS */
 setInterval(()=>{
