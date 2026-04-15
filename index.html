@@ -20,42 +20,34 @@ body{
 }
 
 .card{
-    position:relative;
-    background:rgba(255,255,255,0.85);
-    backdrop-filter: blur(12px);
+    background:rgba(255,255,255,0.9);
     padding:40px;
     border-radius:25px;
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
-}
 
-/* ✅ FIX BUTTON ALIGNMENT */
-.btn-group{
-    display:flex;
-    justify-content:center;
-    gap:15px;
-    margin-top:15px;
+    /* FIX CLICK */
+    position:relative;
+    z-index:10;
 }
 
 button{
-    padding:12px 22px;
+    padding:10px 20px;
     border-radius:20px;
     border:none;
+    margin:10px;
     cursor:pointer;
     font-weight:bold;
+
+    /* FIX CLICK */
+    position:relative;
+    z-index:20;
 }
 
-.yes{
-    background:#ff4d6d;
-    color:white;
-}
+.yes{background:#ff4d6d;color:white;}
+.no{background:#ddd;}
 
-.no{
-    background:#ddd;
-}
-
-/* SCREENS */
 #pinScreen, #finalScreen{
     position:fixed;
     top:0;left:0;
@@ -74,7 +66,10 @@ button{
     max-width:80%;
 }
 
-/* HEARTS */
+.bigText{
+    font-size:45px;
+}
+
 .heart{
     position:absolute;
     animation:floatUp 6s linear infinite;
@@ -91,30 +86,25 @@ button{
 
 <div class="container">
     <div class="card" id="card">
-        <h1>Hi 💖</h1>
+        <h1>Hi, Bulawlo 💖</h1>
         <p>You make my days brighter 🌸</p>
 
         <p><b>Can I make you smile today? 😊</b></p>
-
-        <!-- ✅ FIX ALIGN -->
-        <div class="btn-group">
-            <button class="yes" onclick="startStory()">Yes 💖</button>
-            <button class="no" id="noBtn">No 😅</button>
-        </div>
+        
+        <button class="yes" onclick="startStory()">Yes 💖</button>
+        <button class="no" id="noBtn">No 😅</button>
 
         <p id="result"></p>
     </div>
 </div>
 
-<!-- PIN -->
 <div id="pinScreen">
     <h2>🔐 Enter PIN</h2>
-    <p id="hint">(Hint: ???)</p> <!-- ✅ HIDDEN -->
+    <p id="hint">(Hint: our special number)</p>
     <input id="pin" type="password">
     <button onclick="checkPin()">Enter</button>
 </div>
 
-<!-- FINAL -->
 <div id="finalScreen">
     <h1 id="finalText"></h1>
 </div>
@@ -128,8 +118,8 @@ function startStory(){
     let msgs=[
         "Wait… don’t go yet 😳",
         "I want to tell you something...",
-        "And I hope you listen...",
-        "Because this means a lot to me 💖"
+        "and I hope you listen...",
+        "because this means a lot to me 💖"
     ];
 
     let i=0;
@@ -156,17 +146,15 @@ function checkPin(){
         showFinal();
     }else{
         attempts++;
-
-        // ✅ SHOW HINT ONLY AFTER WRONG
         if(attempts==1){
-            document.getElementById("hint").innerText="Hint: 1 = I, 4 = Love, 3 = You 😳";
+            document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
         }else{
             alert("Try again 😅");
         }
     }
 }
 
-/* FINAL MESSAGE (PAISA-ISA) */
+/* FINAL (PAISA-ISA) */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -176,45 +164,74 @@ function showFinal(){
     let lines=[
         "Hey...",
         "I’ve been wanting to say this for a while...",
-        "You’ve become someone really important to me.",
+        "You became someone really important to me.",
         "You make my days better.",
         "You make me smile.",
         "And I don’t want to hide it anymore...",
         "I love you 💖",
-        "Stay with me a little longer..."
+        "Not just a little...",
+        "but more than I expected.",
+        "So please...",
+        "stay with me a little longer...",
+        "luv yah 💖"
     ];
 
     let i=0;
 
     function next(){
         if(i<lines.length){
-            text.innerHTML = lines[i];
+            text.innerHTML=lines[i];
             i++;
             setTimeout(next,2000);
+        }else{
+            text.className="bigText";
         }
     }
 
     next();
 }
 
-/* ✅ FIX NO BUTTON (HINDI HARANG) */
+/* NO BUTTON (MOVE + MESSAGE) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
+let result=document.getElementById("result");
 
-btn.style.position="absolute";
+btn.style.position="fixed";
+
+let messages=[
+    "Are you sure? 😢",
+    "That hurts 💔",
+    "Even just a little? 🥺",
+    "Please? 😭",
+    "Come on 😅"
+];
+
+let msgIndex=0;
 
 btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-    let maxX = card.clientWidth - btn.offsetWidth - 20;
-    let maxY = card.clientHeight - btn.offsetHeight - 20;
 
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
+    // show message
+    result.innerText = messages[msgIndex];
+    msgIndex = (msgIndex + 1) % messages.length;
 
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+    // move outside but near
+    let rect = card.getBoundingClientRect();
+    let distance = 70;
+
+    let positions = [
+        {x: rect.left - distance, y: rect.top},
+        {x: rect.right + distance, y: rect.top},
+        {x: rect.left, y: rect.top - distance},
+        {x: rect.left, y: rect.bottom + distance}
+    ];
+
+    let pos = positions[Math.floor(Math.random()*positions.length)];
+
+    btn.style.left = pos.x + "px";
+    btn.style.top = pos.y + "px";
 }
 
 /* HEARTS */
