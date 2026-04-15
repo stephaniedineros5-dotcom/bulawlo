@@ -155,7 +155,6 @@ button:hover {
 
 <script>
 
-/* TEXT EFFECT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -168,22 +167,31 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY */
+/* STORY (MAS MAHABA NA 💖) */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
 
     typeText("Wait... 😳",40);
 
-    setTimeout(()=>typeText("I just want to say something...",40),2000);
-    setTimeout(()=>typeText("I enjoy talking to you 💬",40),4000);
-    setTimeout(()=>typeText("You make things feel lighter ✨",40),6000);
-    setTimeout(()=>typeText("And honestly...",40),8000);
-    setTimeout(()=>typeText("You mean something to me 💖",40),10000);
+    setTimeout(()=>typeText("Before anything else...",40),2000);
+    setTimeout(()=>typeText("Can I be honest with you for a bit?",40),4000);
+    setTimeout(()=>typeText("I didn’t expect we’d get this close...",40),6000);
+    setTimeout(()=>typeText("but somehow, here we are 😊",40),8000);
 
-    setTimeout(showFinal,13000);
+    setTimeout(()=>typeText("And I’m actually really glad...",40),10000);
+    setTimeout(()=>typeText("because talking to you feels different 💬",40),12000);
+    setTimeout(()=>typeText("like... lighter, easier, happier ✨",40),14000);
+
+    setTimeout(()=>typeText("You became someone I look forward to talking to",40),16000);
+    setTimeout(()=>typeText("and I didn’t even notice when it started 😳",40),18000);
+
+    setTimeout(()=>typeText("So yeah...",40),20000);
+    setTimeout(()=>typeText("I just wanted you to know that 💖",40),22000);
+
+    setTimeout(showFinal,24000);
 }
 
-/* FINAL */
+/* FINAL CINEMATIC (HINDI NA BITIN 🎬) */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -191,13 +199,15 @@ function showFinal(){
     final.classList.add("show");
 
     let lines = [
-        "So yeah...",
-        "I really appreciate you 💖",
-        "More than you think 😳",
-        "And I hope...",
-        "you stay in my life 🌸",
-        "because honestly...",
-        "you make everything better ✨"
+        "And maybe this is random...",
+        "but I’m really grateful I met you 💖",
+        "you became someone important to me",
+        "more than you probably realize 😳",
+        "and honestly...",
+        "I don’t want to lose this",
+        "I don’t want to lose you",
+        "so if it’s okay...",
+        "stay with me a little longer? 😊"
     ];
 
     let i=0;
@@ -206,19 +216,23 @@ function showFinal(){
         if(i<lines.length){
             text.innerHTML=lines[i];
             i++;
-            setTimeout(next,2200);
+            setTimeout(next,2500);
         }
     }
 
     next();
 }
 
-/* NO BUTTON (CLICK → ILAG, STAYS INSIDE CARD) */
+/* NO BUTTON (LEVELING SYSTEM 😈) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
+let result = document.getElementById("result");
+
+let clicks = 0;
 
 btn.addEventListener("click", (e) => {
     e.preventDefault();
+    clicks++;
 
     let maxX = card.clientWidth - btn.offsetWidth;
     let maxY = card.clientHeight - btn.offsetHeight;
@@ -229,32 +243,29 @@ btn.addEventListener("click", (e) => {
     btn.style.position = "absolute";
     btn.style.left = x + "px";
     btn.style.top = y + "px";
+
+    /* personality 😏 */
+    if(clicks == 1){
+        result.innerText = "No? sure ka? 😏";
+    }
+    else if(clicks == 2){
+        result.innerText = "Grabe ka naman 😂";
+    }
+    else if(clicks == 3){
+        result.innerText = "Try mo pa ulit... di mo yan mahuhuli 😈";
+    }
+    else if(clicks == 4){
+        result.innerText = "Okay, medyo determined ka ah 😳";
+    }
+    else if(clicks == 5){
+        result.innerText = "Sige... pahihirapan na kita 😜";
+        btn.style.transform = "scale(0.7)";
+    }
+    else if(clicks >= 6){
+        result.innerText = "Ayan na... di mo na talaga yan ma-click 😂";
+        btn.style.transform = "scale(0.5)";
+    }
 });
-
-/* FLOWERS */
-setInterval(()=>{
-    let f=document.createElement("div");
-    f.className="flower";
-    f.innerHTML="🌸";
-    f.style.left=Math.random()*100+"vw";
-    f.style.fontSize=(20+Math.random()*20)+"px";
-    f.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(f);
-
-    setTimeout(()=>f.remove(),8000);
-},400);
-
-/* LIGHTS */
-setInterval(()=>{
-    let l=document.createElement("div");
-    l.className="light";
-    l.style.left=Math.random()*100+"vw";
-    l.style.width=l.style.height=(5+Math.random()*10)+"px";
-    document.body.appendChild(l);
-
-    setTimeout(()=>l.remove(),6000);
-},500);
-
 </script>
 
 </body>
