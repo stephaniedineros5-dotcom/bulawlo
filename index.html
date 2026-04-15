@@ -12,82 +12,123 @@ body {
     overflow: hidden;
 }
 
-/* CENTER */
+/* Container */
 .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Card */
+.card {
+    background: rgba(255,255,255,0.95);
+    padding: 40px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+    max-width: 350px;
+    animation: float 3s ease-in-out infinite;
+}
+
+h1 { color: #ff4d6d; }
+p { color: #444; }
+
+button {
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    margin: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover { transform: scale(1.1); }
+
+.yes { background: #ff4d6d; color: white; }
+.no { background: #ddd; }
+
+/* SCREENS */
+.screen {
+    position: fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-}
-
-/* CARD */
-.card {
-    position:relative;
-    background: rgba(255,255,255,0.9);
-    padding:40px;
-    border-radius:25px;
-    text-align:center;
-    box-shadow:0 10px 40px rgba(0,0,0,0.2);
-    max-width:350px;
-}
-
-/* BUTTONS */
-button {
-    padding:10px 20px;
-    border-radius:20px;
-    border:none;
-    margin:10px;
-    cursor:pointer;
-}
-
-.yes { background:#ff4d6d; color:white; }
-.no { background:#ddd; }
-
-/* PIN SCREEN */
-#pinScreen{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:black;
-    color:white;
-    display:none;
-    justify-content:center;
-    align-items:center;
     flex-direction:column;
-}
-
-/* FINAL */
-#finalScreen{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:black;
-    color:white;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    flex-direction:column;
-    text-align:center;
-}
-
-#finalText{
-    font-size:28px;
+    opacity:0;
+    pointer-events:none;
     transition:1s;
+    color:white;
+    text-align:center;
 }
 
-.bigText{
-    font-size:45px;
+.show {
+    opacity:1;
+    pointer-events:all;
 }
 
-/* hearts */
-.heart{
-    position:absolute;
+#pinScreen { background:#6a11cb; }
+#finalScreen { background:black; }
+
+/* input */
+input {
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+}
+
+/* glow */
+.glow {
+    animation: glow 2s infinite alternate;
+}
+
+@keyframes glow {
+    from {text-shadow:0 0 10px #fff;}
+    to {text-shadow:0 0 25px #fff;}
+}
+
+/* floating card */
+@keyframes float {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+}
+
+/* HEARTS (from first code) */
+.heart {
+    position: absolute;
+    color: #ff4d6d;
     animation: floatUp 6s linear infinite;
 }
 
-@keyframes floatUp{
-    0%{transform:translateY(100vh);}
-    100%{transform:translateY(-10vh);}
+@keyframes floatUp {
+    0% {transform: translateY(100vh); opacity:0;}
+    50% {opacity:1;}
+    100% {transform: translateY(-10vh); opacity:0;}
+}
+
+/* FLOWERS (added) */
+.flower {
+    position: absolute;
+    animation: fall 8s linear infinite;
+}
+
+@keyframes fall {
+    0% {transform: translateY(-10vh);}
+    100% {transform: translateY(110vh);}
+}
+
+/* CONFETTI (added) */
+.confetti {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    animation: fall 3s linear infinite;
 }
 </style>
 </head>
@@ -95,9 +136,11 @@ button {
 <body>
 
 <div class="container">
-    <div class="card" id="card">
-        <h1>Hi Bulol 💖</h1>
-        <p>You make my days brighter 🌸</p>
+    <div class="card">
+        <h1>Hi 💖</h1>
+        <p>You make my days better 🌸</p>
+
+        <p><b>Can I tell you something? 😊</b></p>
 
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
@@ -106,148 +149,162 @@ button {
     </div>
 </div>
 
-<!-- PIN -->
-<div id="pinScreen">
-    <h2>🔐 Enter PIN</h2>
-    <p id="hint">(Hint: our special number)</p>
-    <input id="pin" type="password">
-    <button onclick="checkPin()">Enter</button>
+<!-- PIN SCREEN -->
+<div id="pinScreen" class="screen">
+    <h1>🔒 Enter Secret Code</h1>
+    <p id="hint">Hint: important number 😉</p>
+    <input type="password" id="pin">
+    <button onclick="checkPin()">Unlock 💖</button>
 </div>
 
-<!-- FINAL -->
-<div id="finalScreen">
+<!-- FINAL SCREEN -->
+<div id="finalScreen" class="screen">
     <h1 id="finalText"></h1>
 </div>
 
-<button onclick="playMusic()">Play</button>
-
-<audio id="music">
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b6d9b.mp3">
 </audio>
 
 <script>
-function playMusic(){
-    document.getElementById("music").play();
-}
 
-<script>
+let noClicks = 0;
+
+/* typing */
+function typeText(text, delay) {
+    let i = 0;
+    let el = document.getElementById("result");
+    el.innerHTML = "";
+
+    let interval = setInterval(()=>{
+        el.innerHTML += text[i];
+        i++;
+        if(i>=text.length) clearInterval(interval);
+    }, delay);
+}
 
 /* STORY */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
-    let r=document.getElementById("result");
 
-    let msgs=[
-        "Wait… don’t go yet 😳",
-        "I want to tell you something...",
-        "and I hope you listen...",
-        "because this means a lot to me 💖"
-    ];
+    typeText("Wait... 😳",40);
 
-    let i=0;
-    function next(){
-        if(i<msgs.length){
-            r.innerText=msgs[i];
-            i++;
-            setTimeout(next,2000);
-        }else{
-            document.getElementById("pinScreen").style.display="flex";
-        }
-    }
-    next();
+    setTimeout(()=>typeText("I just want to say something...",40),2000);
+    setTimeout(()=>typeText("I enjoy talking to you 💬",40),4000);
+    setTimeout(()=>typeText("You make things lighter ✨",40),6000);
+    setTimeout(()=>typeText("And honestly...",40),8000);
+    setTimeout(()=>typeText("You matter to me 💖",40),10000);
+
+    setTimeout(()=>{
+        document.getElementById("pinScreen").classList.add("show");
+    },12000);
 }
 
 /* PIN */
-let attempts=0;
+let attempts = 0;
 
 function checkPin(){
-    let val=document.getElementById("pin").value;
+    let val = document.getElementById("pin").value;
 
     if(val==="143"){
-        document.getElementById("pinScreen").style.display="none";
+        document.getElementById("pinScreen").classList.remove("show");
         showFinal();
-    }else{
+    } else {
         attempts++;
+
         if(attempts==1){
             document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
-        }else{
-            alert("Try again 😅");
+        } else {
+            alert("Try again 😏");
         }
     }
 }
 
-/* FINAL CINEMATIC */
+/* FINAL */
 function showFinal(){
-    let f=document.getElementById("finalScreen");
-    let text=document.getElementById("finalText");
+    let final = document.getElementById("finalScreen");
+    let text = document.getElementById("finalText");
 
-    f.style.display="flex";
+    final.classList.add("show");
 
-    let lines=[
-        "Hey...",
-        "",
-        "I’ve been wanting to say this for a while...",
-        "",
-        "You became someone really important to me.",
-        "",
-        "You make my days better.",
-        "You make me smile.",
-        "",
-        "And I don’t want to hide it anymore...",
-        "",
-        "I love you 💖",
-        "",
-        "Not just a little...",
-        "but more than I expected.",
-        "",
-        "So please...",
-        "",
-        "stay with me a little longer...",
-        "",
-        "Sayang...",
-        "",
-        "luv yah 💖"
+    let lines = [
+        "So yeah...",
+        "I really appreciate you 💖",
+        "Like... a lot 😳",
+        "And I hope...",
+        "you stay in my life 😊"
     ];
 
     let i=0;
 
-    function next(){
+    function nextLine(){
         if(i<lines.length){
-            text.innerHTML=lines[i];
+            text.innerHTML = lines[i];
+            text.classList.add("glow");
             i++;
-            setTimeout(next,2300);
-        }else{
-            text.className="bigText";
+            setTimeout(nextLine,2000);
+        } else {
+            launchEffects();
         }
     }
 
-    next();
+    nextLine();
 }
 
-/* NO BUTTON (FIXED 😈) */
-let btn=document.getElementById("noBtn");
-let card=document.getElementById("card");
+/* NO BUTTON */
+let btn = document.getElementById("noBtn");
 
 btn.addEventListener("mouseover",()=>{
-    let rect=card.getBoundingClientRect();
+    noClicks++;
 
-    let offsetX = Math.random() > 0.5 ? 120 : -120; // left or right
-    let offsetY = (Math.random()*100)-50;
+    let x = Math.random() * (window.innerWidth - btn.offsetWidth);
+    let y = Math.random() * (window.innerHeight - btn.offsetHeight);
 
-    btn.style.position="auto";
-    btn.style.left=(rect.left + offsetX)+"px";
-    btn.style.top=(rect.top + offsetY)+"px";
+    btn.style.position="fixed";
+    btn.style.left=x+"px";
+    btn.style.top=y+"px";
+
+    if(noClicks==3){
+        document.getElementById("result").innerText="You really trying to press no? 😏";
+    }
 });
 
-/* HEARTS */
-setInterval(()=>{
-    let h=document.createElement("div");
-    h.className="heart";
-    h.innerHTML="💖";
-    h.style.left=Math.random()*100+"vw";
-    document.body.appendChild(h);
-    setTimeout(()=>h.remove(),6000);
-},300);
+/* COMBINED EFFECTS (hearts + flowers + confetti) */
+function launchEffects(){
+
+    /* hearts */
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="💖";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(20+Math.random()*20)+"px";
+        document.body.appendChild(h);
+        setTimeout(()=>h.remove(),6000);
+    },200);
+
+    /* flowers */
+    setInterval(()=>{
+        let f=document.createElement("div");
+        f.className="flower";
+        f.innerHTML="🌸";
+        f.style.left=Math.random()*100+"vw";
+        f.style.fontSize=(20+Math.random()*20)+"px";
+        document.body.appendChild(f);
+        setTimeout(()=>f.remove(),8000);
+    },600);
+
+    /* confetti */
+    for(let i=0;i<80;i++){
+        let c=document.createElement("div");
+        c.className="confetti";
+        c.style.left=Math.random()*100+"vw";
+        c.style.background=["#fff","#ff4d6d","#ffd1dc"][Math.floor(Math.random()*3)];
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),3000);
+    }
+}
 
 </script>
 
