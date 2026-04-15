@@ -5,15 +5,15 @@
 <title>For Someone Special 💖</title>
 
 <style>
-body {
-    margin: 0;
-    font-family: 'Segoe UI', cursive;
-    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-    overflow: hidden;
+body{
+    margin:0;
+    font-family:'Segoe UI',cursive;
+    background:linear-gradient(135deg,#ffd1dc,#fbc2eb,#a18cd1);
+    overflow:hidden;
 }
 
 /* CENTER */
-.container {
+.container{
     display:flex;
     justify-content:center;
     align-items:center;
@@ -21,9 +21,9 @@ body {
 }
 
 /* CARD */
-.card {
+.card{
     position:relative;
-    background: rgba(255,255,255,0.9);
+    background:rgba(255,255,255,0.9);
     padding:40px;
     border-radius:25px;
     text-align:center;
@@ -32,22 +32,23 @@ body {
 }
 
 /* BUTTONS */
-button {
+button{
     padding:10px 20px;
     border-radius:20px;
     border:none;
     margin:10px;
     cursor:pointer;
+    font-weight:bold;
 }
 
-.yes { background:#ff4d6d; color:white; }
-.no { background:#ddd; }
+.yes{background:#ff4d6d;color:white;}
+.no{background:#ddd;}
 
 /* PIN SCREEN */
 #pinScreen{
     position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    top:0;left:0;
+    width:100%;height:100%;
     background:black;
     color:white;
     display:none;
@@ -59,8 +60,8 @@ button {
 /* FINAL */
 #finalScreen{
     position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
+    top:0;left:0;
+    width:100%;height:100%;
     background:black;
     color:white;
     display:none;
@@ -72,17 +73,17 @@ button {
 
 #finalText{
     font-size:28px;
-    transition:1s;
+    max-width:80%;
 }
 
 .bigText{
     font-size:45px;
 }
 
-/* hearts */
+/* HEARTS */
 .heart{
     position:absolute;
-    animation: floatUp 6s linear infinite;
+    animation:floatUp 6s linear infinite;
 }
 
 @keyframes floatUp{
@@ -96,7 +97,7 @@ button {
 
 <div class="container">
     <div class="card" id="card">
-        <h1>Hi Bulol 💖</h1>
+        <h1>Hi 💖</h1>
         <p>You make my days brighter 🌸</p>
 
         <button class="yes" onclick="startStory()">Yes 💖</button>
@@ -119,22 +120,18 @@ button {
     <h1 id="finalText"></h1>
 </div>
 
-<button onclick="playMusic()">Play</button>
-
-<audio id="music">
-<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+<!-- MUSIC -->
+<audio id="music" loop preload="auto">
+    <source src="music.mp3" type="audio/mpeg">
 </audio>
-
-<script>
-function playMusic(){
-    document.getElementById("music").play();
-}
 
 <script>
 
 /* STORY */
 function startStory(){
-    document.getElementById("music").play().catch(()=>{});
+    let music=document.getElementById("music");
+    music.play().catch(()=>{});
+
     let r=document.getElementById("result");
 
     let msgs=[
@@ -176,7 +173,7 @@ function checkPin(){
     }
 }
 
-/* FINAL CINEMATIC */
+/* FINAL */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -231,12 +228,12 @@ let card=document.getElementById("card");
 btn.addEventListener("mouseover",()=>{
     let rect=card.getBoundingClientRect();
 
-    let offsetX = Math.random() > 0.5 ? 120 : -120; // left or right
-    let offsetY = (Math.random()*100)-50;
+    let offsetX=Math.random()>0.5?120:-120;
+    let offsetY=(Math.random()*100)-50;
 
     btn.style.position="fixed";
-    btn.style.left=(rect.left + offsetX)+"px";
-    btn.style.top=(rect.top + offsetY)+"px";
+    btn.style.left=(rect.left+offsetX)+"px";
+    btn.style.top=(rect.top+offsetY)+"px";
 });
 
 /* HEARTS */
@@ -245,6 +242,7 @@ setInterval(()=>{
     h.className="heart";
     h.innerHTML="💖";
     h.style.left=Math.random()*100+"vw";
+    h.style.fontSize=(20+Math.random()*20)+"px";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
 },300);
