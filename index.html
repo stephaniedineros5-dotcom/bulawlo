@@ -23,13 +23,13 @@ body {
 /* CARD */
 .card {
     position: relative;
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.35);
     backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    max-width: 350px;
+    max-width: 360px;
     z-index: 10;
 }
 
@@ -60,7 +60,6 @@ button:hover {
 
 .no {
     background: #eee;
-    position: relative;
 }
 
 /* FINAL SCREEN */
@@ -70,7 +69,7 @@ button:hover {
     left:0;
     width:100%;
     height:100%;
-    background: black;
+    background: radial-gradient(circle, #000 40%, #ff758c);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -83,9 +82,9 @@ button:hover {
 
 .show { opacity:1; }
 
-/* BIG FINAL TEXT */
+/* BIG TEXT */
 .bigText {
-    font-size: 42px;
+    font-size: 45px;
     animation: pop 1s ease forwards;
 }
 
@@ -94,18 +93,31 @@ button:hover {
     100% { transform: scale(1); opacity:1; }
 }
 
+/* PETALS */
+.petal {
+    position:absolute;
+    pointer-events:none;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {transform:translateY(-10vh);opacity:0;}
+    50% {opacity:1;}
+    100% {transform:translateY(110vh);opacity:0;}
+}
+
 /* LIGHTS */
 .light {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.6);
-    pointer-events: none;
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.6);
+    pointer-events:none;
     animation: floatUp 6s linear infinite;
 }
 
 @keyframes floatUp {
-    0% {transform: translateY(100vh);}
-    100% {transform: translateY(-10vh);}
+    0% {transform:translateY(100vh);}
+    100% {transform:translateY(-10vh);}
 }
 </style>
 </head>
@@ -128,19 +140,17 @@ button:hover {
     </div>
 </div>
 
-<!-- FINAL -->
 <div id="finalScreen">
     <h1 id="finalText"></h1>
 </div>
 
-<!-- MUSIC -->
 <audio id="music" loop>
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b6d9b.mp3">
 </audio>
 
 <script>
 
-/* TEXT EFFECT */
+/* TYPE EFFECT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -153,28 +163,42 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY (ENGLISH 💖) */
+/* STORY */
 function startStory(){
-    document.getElementById("music").play().catch(()=>{});
+    let music = document.getElementById("music");
+    music.volume = 0;
+    music.play().catch(()=>{});
 
-    typeText("Wait... 😳",40);
+    /* fade in music */
+    let vol = 0;
+    let fade = setInterval(()=>{
+        if(vol < 0.5){
+            vol += 0.02;
+            music.volume = vol;
+        } else clearInterval(fade);
+    },200);
 
-    setTimeout(()=>typeText("Can I be honest with you for a moment?",40),2000);
-    setTimeout(()=>typeText("I didn’t expect you to become this important to me...",40),4000);
-    setTimeout(()=>typeText("but somehow, you did.",40),6000);
-    setTimeout(()=>typeText("And I’m really glad you did 😊",40),8000);
+    typeText("Hey... 😳",40);
 
-    setTimeout(()=>typeText("Talking to you feels different...",40),10000);
-    setTimeout(()=>typeText("in a good way.",40),12000);
-    setTimeout(()=>typeText("You make things feel lighter... and happier ✨",40),14000);
+    setTimeout(()=>typeText("I’ve been meaning to tell you something...",40),2000);
+    setTimeout(()=>typeText("and I didn’t really know how to start.",40),4000);
 
-    setTimeout(()=>typeText("And honestly...",40),16000);
-    setTimeout(()=>typeText("I really like having you in my life 💖",40),18000);
+    setTimeout(()=>typeText("But I guess I’ll just say it...",40),6000);
+    setTimeout(()=>typeText("you’ve become really important to me.",40),8000);
 
-    setTimeout(showFinal,21000);
+    setTimeout(()=>typeText("More than I expected, honestly.",40),10000);
+    setTimeout(()=>typeText("Talking to you just feels... right 💬",40),12000);
+
+    setTimeout(()=>typeText("You make my days lighter ✨",40),14000);
+    setTimeout(()=>typeText("and somehow... better.",40),16000);
+
+    setTimeout(()=>typeText("And I don’t say this a lot but...",40),18000);
+    setTimeout(()=>typeText("I’m really glad I met you 💖",40),20000);
+
+    setTimeout(showFinal,23000);
 }
 
-/* FINAL (CINEMATIC 🎬) */
+/* FINAL */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -183,11 +207,12 @@ function showFinal(){
 
     let lines = [
         "So yeah...",
-        "I just wanted to tell you that 💖",
-        "I really appreciate you",
-        "more than you probably realize 😳",
+        "this might be a little unexpected...",
+        "but I just wanted you to know",
+        "you matter to me 💖",
+        "a lot more than you think",
         "and I hope...",
-        "you stay in my life for a long time 😊"
+        "you stay in my life 😊"
     ];
 
     let i=0;
@@ -196,11 +221,20 @@ function showFinal(){
         if(i < lines.length){
             text.innerHTML = lines[i];
             i++;
-            setTimeout(next,2000);
+            setTimeout(next,2200);
         } else {
             setTimeout(()=>{
                 text.innerHTML = "💖 Stay with me 💖";
-                text.classList.add("bigText");
+                text.className = "bigText";
+
+                /* bonus line */
+                setTimeout(()=>{
+                    let extra = document.createElement("p");
+                    extra.innerText = "…because I really like you 😳";
+                    extra.style.marginTop = "20px";
+                    document.getElementById("finalScreen").appendChild(extra);
+                },2500);
+
             },2000);
         }
     }
@@ -208,41 +242,44 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON (OUTSIDE CARD BUT NEAR 😈) */
+/* NO BUTTON (SMART 😈) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
 let result = document.getElementById("result");
 
 let clicks = 0;
 
-btn.addEventListener("click", (e) => {
+btn.addEventListener("click", (e)=>{
     e.preventDefault();
     clicks++;
 
     let rect = card.getBoundingClientRect();
     let range = 150;
 
-    let x = rect.left + (Math.random()*range*2 - range);
-    let y = rect.top + (Math.random()*range*2 - range);
-
     btn.style.position = "fixed";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+    btn.style.left = rect.left + (Math.random()*range*2-range) + "px";
+    btn.style.top = rect.top + (Math.random()*range*2-range) + "px";
 
-    if(clicks == 1){
-        result.innerText = "No? Are you sure? 😏";
-    }
-    else if(clicks == 2){
-        result.innerText = "Wow... really? 😂";
-    }
-    else if(clicks == 3){
-        result.innerText = "Come on, try again 😈";
-    }
-    else if(clicks >= 4){
-        result.innerText = "You’re not catching me that easily 😜";
-        btn.style.transform = "scale(0.6)";
+    if(clicks==1) result.innerText="Are you sure? 😏";
+    else if(clicks==2) result.innerText="Really? 😂";
+    else if(clicks==3) result.innerText="You’re persistent 😳";
+    else if(clicks>=4){
+        result.innerText="You’re not catching me 😜";
+        btn.style.transform="scale(0.6)";
     }
 });
+
+/* PETALS */
+setInterval(()=>{
+    let p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML="🌸";
+    p.style.left=Math.random()*100+"vw";
+    p.style.fontSize=(20+Math.random()*20)+"px";
+    p.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),8000);
+},300);
 
 /* LIGHTS */
 setInterval(()=>{
@@ -251,7 +288,6 @@ setInterval(()=>{
     l.style.left=Math.random()*100+"vw";
     l.style.width=l.style.height=(5+Math.random()*10)+"px";
     document.body.appendChild(l);
-
     setTimeout(()=>l.remove(),6000);
 },500);
 
