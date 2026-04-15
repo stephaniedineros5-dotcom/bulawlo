@@ -53,7 +53,7 @@ button{
 }
 
 button:hover{
-    transform:scale(1.08);
+    transform:scale(1.05);
 }
 
 .yes{
@@ -66,6 +66,7 @@ button:hover{
     background:#ddd;
 }
 
+/* SCREENS */
 #pinScreen, #finalScreen{
     position:fixed;
     top:0;left:0;
@@ -79,12 +80,21 @@ button:hover{
     text-align:center;
 }
 
+/* FINAL TEXT (NO MORE TYPING) */
 #finalText{
     font-size:28px;
     max-width:80%;
     line-height:1.6;
+    opacity:0;
+    animation:fadeInText 2s forwards;
 }
 
+@keyframes fadeInText{
+    from{opacity:0;transform:scale(0.95);}
+    to{opacity:1;transform:scale(1);}
+}
+
+/* GLOW */
 .bigText{
     font-size:45px;
     animation: glow 1.5s infinite alternate;
@@ -125,7 +135,7 @@ button:hover{
 
 <div id="pinScreen">
     <h2>🔐 Enter PIN</h2>
-    <p id="hint">(Hint: our special number)</p>
+    <p id="hint">(Hint: 1 = I, 4 = Love, 3 = You)</p>
     <input id="pin" type="password">
     <button onclick="checkPin()">Enter</button>
 </div>
@@ -179,60 +189,35 @@ function checkPin(){
     }
 }
 
-/* TYPE EFFECT */
-function typeLine(element, text, speed, callback){
-    let i = 0;
-    function typing(){
-        if(i < text.length){
-            element.innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typing, speed);
-        }else{
-            element.innerHTML += "<br>";
-            if(callback) callback();
-        }
-    }
-    typing();
-}
-
-/* FINAL */
+/* FINAL (SIMPLE FADE IN TEXT) */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
 
     f.style.display="flex";
 
-    let lines=[
-        "Hey...",
-        "I’ve been wanting to say this for a while...",
-        "You’ve become someone really important to me.",
-        "You make my days better.",
-        "You make me smile.",
-        "And I don’t want to hide it anymore...",
-        "I love you 💖",
-        "Not just a little...",
-        "But more than I expected.",
-        "So please...",
-        "Stay with me a little longer...",
-        "Don’t go...",
-        "I love you 💖"
-    ];
+    text.innerHTML = `
+    Hey...<br><br>
+    I’ve been wanting to say this for a while...<br><br>
+    You’ve become someone really important to me.<br>
+    You make my days better.<br>
+    You make me smile.<br><br>
+    And I don’t want to hide it anymore...<br><br>
+    I love you 💖<br><br>
+    Not just a little...<br>
+    But more than I expected.<br><br>
+    So please...<br>
+    Stay with me a little longer...<br><br>
+    Don’t go...<br><br>
+    I love you 💖
+    `;
 
-    let i=0;
-
-    function next(){
-        if(i < lines.length){
-            typeLine(text, lines[i], 40, next);
-            i++;
-        }else{
-            text.classList.add("bigText");
-        }
-    }
-
-    next();
+    setTimeout(()=>{
+        text.classList.add("bigText");
+    },2000);
 }
 
-/* NO BUTTON (SAFE NEAR CARD) */
+/* NO BUTTON (FIXED NEAR CARD ONLY) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
@@ -257,22 +242,9 @@ function moveButton(){
 
     let cardRect = card.getBoundingClientRect();
 
-    let x, y;
-    let safe = false;
-
-    while(!safe){
-        x = cardRect.left - 100 + Math.random() * (cardRect.width + 200);
-        y = cardRect.top - 100 + Math.random() * (cardRect.height + 200);
-
-        if(
-            x < cardRect.left - 20 ||
-            x > cardRect.right + 20 ||
-            y < cardRect.top - 20 ||
-            y > cardRect.bottom + 20
-        ){
-            safe = true;
-        }
-    }
+    // ALWAYS NEAR CARD ONLY (NO ESCAPING SCREEN)
+    let x = cardRect.left + Math.random() * cardRect.width;
+    let y = cardRect.top + cardRect.height + 10;
 
     btn.style.position="fixed";
     btn.style.left = x + "px";
