@@ -217,11 +217,10 @@ function showFinal(){
     },2000);
 }
 
-/* NO BUTTON (FIXED NEAR CARD ONLY) */
-let btn=document.getElementById("noBtn");
-let card=document.getElementById("card");
+let btn = document.getElementById("noBtn");
+let card = document.getElementById("card");
 
-let messages=[
+let messages = [
     "Are you sure? 😢",
     "That’s kinda sad 💔",
     "Even just a little? 🥺",
@@ -229,26 +228,36 @@ let messages=[
     "Come on 😅"
 ];
 
-let msgIndex=0;
+let msgIndex = 0;
+
+// IMPORTANT: make card relative positioning (safe area)
+card.style.position = "relative";
+btn.style.position = "absolute";
+
+// initial safe position
+btn.style.bottom = "15px";
+btn.style.right = "15px";
 
 btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-    let result=document.getElementById("result");
+    let result = document.getElementById("result");
 
     result.innerText = messages[msgIndex];
-    msgIndex = (msgIndex+1) % messages.length;
+    msgIndex = (msgIndex + 1) % messages.length;
 
-    let cardRect = card.getBoundingClientRect();
+    let padding = 20;
 
-    // ALWAYS NEAR CARD ONLY (NO ESCAPING SCREEN)
-    let x = cardRect.left + Math.random() * cardRect.width;
-    let y = cardRect.top + cardRect.height + 10;
+    let maxX = card.clientWidth - btn.offsetWidth - padding;
+    let maxY = card.clientHeight - btn.offsetHeight - padding;
 
-    btn.style.position="fixed";
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
     btn.style.left = x + "px";
     btn.style.top = y + "px";
+}
 }
 
 /* HEARTS */
