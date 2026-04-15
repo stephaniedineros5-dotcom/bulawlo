@@ -5,58 +5,62 @@
 <title>For Someone Special 💖</title>
 
 <style>
-body{
-    margin:0;
-    font-family:'Segoe UI',cursive;
-    background:linear-gradient(135deg,#ffd1dc,#fbc2eb,#a18cd1);
-    overflow:hidden;
+body {
+    margin: 0;
+    font-family: 'Segoe UI', cursive;
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+    overflow: hidden;
 }
 
-.container{
+/* CENTER */
+.container {
     display:flex;
     justify-content:center;
     align-items:center;
     height:100vh;
 }
 
-/* FORM */
-.card{
-    background:rgba(255,255,255,0.9);
+/* CARD */
+.card {
+    position:relative;
+    background: rgba(255,255,255,0.9);
     padding:40px;
     border-radius:25px;
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
-
-    position:relative;
-    z-index:1;
-
-    animation:wave 6s ease-in-out infinite;
 }
 
-@keyframes wave{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-8px);}
-    100%{transform:translateY(0);}
-}
-
-button{
+/* BUTTONS */
+button {
     padding:10px 20px;
     border-radius:20px;
     border:none;
     margin:10px;
     cursor:pointer;
-    font-weight:bold;
 }
 
-.yes{background:#ff4d6d;color:white;}
-.no{background:#ddd;}
+.yes { background:#ff4d6d; color:white; }
+.no { background:#ddd; }
 
-/* SCREENS */
-#pinScreen, #finalScreen{
+/* PIN SCREEN */
+#pinScreen{
     position:fixed;
-    top:0;left:0;
-    width:100%;height:100%;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:black;
+    color:white;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+/* FINAL */
+#finalScreen{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
     background:black;
     color:white;
     display:none;
@@ -64,50 +68,21 @@ button{
     align-items:center;
     flex-direction:column;
     text-align:center;
-
-    z-index:9999;
 }
 
-/* FINAL TEXT ✨ IMPROVED */
 #finalText{
     font-size:28px;
-    max-width:80%;
-    line-height:1.6;
-    animation: fadeGlow 2.5s ease-in-out forwards;
-}
-
-/* glow + fade + soft pulse */
-@keyframes fadeGlow{
-    0%{
-        opacity:0;
-        transform:scale(0.95);
-        text-shadow:none;
-    }
-    50%{
-        opacity:1;
-        transform:scale(1);
-        text-shadow:0 0 10px #ff4d6d;
-    }
-    100%{
-        opacity:1;
-        transform:scale(1.02);
-        text-shadow:0 0 25px #ff4d6d, 0 0 45px #ff99aa;
-    }
+    transition:1s;
 }
 
 .bigText{
     font-size:45px;
-    animation: glow 1.5s infinite alternate;
 }
 
-@keyframes glow{
-    from{ text-shadow:0 0 10px #ff4d6d; }
-    to{ text-shadow:0 0 30px #ff99aa, 0 0 50px #ff4d6d; }
-}
-
+/* hearts */
 .heart{
     position:absolute;
-    animation:floatUp 6s linear infinite;
+    animation: floatUp 6s linear infinite;
 }
 
 @keyframes floatUp{
@@ -121,11 +96,9 @@ button{
 
 <div class="container">
     <div class="card" id="card">
-        <h1>Hi, Bulawlo 💖</h1>
+        <h1>Hi Bulol 💖</h1>
         <p>You make my days brighter 🌸</p>
 
-        <p><b>Can I make you smile today? 😊</b></p>
-        
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
 
@@ -133,6 +106,7 @@ button{
     </div>
 </div>
 
+<!-- PIN -->
 <div id="pinScreen">
     <h2>🔐 Enter PIN</h2>
     <p id="hint">(Hint: our special number)</p>
@@ -140,16 +114,28 @@ button{
     <button onclick="checkPin()">Enter</button>
 </div>
 
+<!-- FINAL -->
 <div id="finalScreen">
     <h1 id="finalText"></h1>
 </div>
+
+<button onclick="playMusic()">Play</button>
+
+<audio id="music">
+<source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+</audio>
+
+<script>
+function playMusic(){
+    document.getElementById("music").play();
+}
 
 <script>
 
 /* STORY */
 function startStory(){
+    document.getElementById("music").play().catch(()=>{});
     let r=document.getElementById("result");
-    let card=document.getElementById("card");
 
     let msgs=[
         "Wait… don’t go yet 😳",
@@ -165,7 +151,6 @@ function startStory(){
             i++;
             setTimeout(next,2000);
         }else{
-            card.style.display="none";
             document.getElementById("pinScreen").style.display="flex";
         }
     }
@@ -191,7 +176,7 @@ function checkPin(){
     }
 }
 
-/* FINAL MESSAGE */
+/* FINAL CINEMATIC */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -200,16 +185,27 @@ function showFinal(){
 
     let lines=[
         "Hey...",
+        "",
         "I’ve been wanting to say this for a while...",
+        "",
         "You became someone really important to me.",
+        "",
         "You make my days better.",
         "You make me smile.",
+        "",
         "And I don’t want to hide it anymore...",
+        "",
         "I love you 💖",
+        "",
         "Not just a little...",
         "but more than I expected.",
+        "",
         "So please...",
+        "",
         "stay with me a little longer...",
+        "",
+        "Sayang...",
+        "",
         "luv yah 💖"
     ];
 
@@ -219,7 +215,7 @@ function showFinal(){
         if(i<lines.length){
             text.innerHTML=lines[i];
             i++;
-            setTimeout(next,2000);
+            setTimeout(next,2300);
         }else{
             text.className="bigText";
         }
@@ -228,33 +224,20 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON - FIXED (VERY CLOSE TO CARD ONLY) */
+/* NO BUTTON (FIXED 😈) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
-let result=document.getElementById("result");
 
-btn.style.position="absolute";
-btn.style.bottom="10px";
-btn.style.right="10px";
+btn.addEventListener("mouseover",()=>{
+    let rect=card.getBoundingClientRect();
 
-btn.addEventListener("mouseover", moveButton);
-btn.addEventListener("touchstart", moveButton);
+    let offsetX = Math.random() > 0.5 ? 120 : -120; // left or right
+    let offsetY = (Math.random()*100)-50;
 
-function moveButton(){
-
-    result.innerText = "Why not? 🥺";
-
-    let padding = 10;
-
-    let maxX = card.clientWidth - btn.offsetWidth - padding;
-    let maxY = card.clientHeight - btn.offsetHeight - padding;
-
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
-
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
-}
+    btn.style.position="fixed";
+    btn.style.left=(rect.left + offsetX)+"px";
+    btn.style.top=(rect.top + offsetY)+"px";
+});
 
 /* HEARTS */
 setInterval(()=>{
@@ -262,7 +245,6 @@ setInterval(()=>{
     h.className="heart";
     h.innerHTML="💖";
     h.style.left=Math.random()*100+"vw";
-    h.style.fontSize=(20+Math.random()*20)+"px";
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
 },300);
