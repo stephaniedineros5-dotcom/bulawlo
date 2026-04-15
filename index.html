@@ -12,7 +12,6 @@ body{
     overflow:hidden;
 }
 
-/* CENTER */
 .container{
     display:flex;
     justify-content:center;
@@ -20,7 +19,6 @@ body{
     height:100vh;
 }
 
-/* CARD */
 .card{
     position:relative;
     background:rgba(255,255,255,0.85);
@@ -30,34 +28,32 @@ body{
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
-    animation:fadeIn 1.5s ease;
 }
 
-@keyframes fadeIn{
-    from{opacity:0;transform:translateY(30px);}
-    to{opacity:1;transform:translateY(0);}
+/* ✅ FIX BUTTON ALIGNMENT */
+.btn-group{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    margin-top:15px;
 }
 
-/* BUTTONS */
 button{
     padding:12px 22px;
     border-radius:20px;
     border:none;
-    margin:10px;
     cursor:pointer;
     font-weight:bold;
-    transition:0.3s;
 }
-
-button:hover{ transform:scale(1.05); }
 
 .yes{
     background:#ff4d6d;
     color:white;
-    box-shadow:0 0 10px #ff4d6d;
 }
 
-.no{ background:#ddd; }
+.no{
+    background:#ddd;
+}
 
 /* SCREENS */
 #pinScreen, #finalScreen{
@@ -71,24 +67,11 @@ button:hover{ transform:scale(1.05); }
     align-items:center;
     flex-direction:column;
     text-align:center;
-    animation:fadeIn 0.8s;
 }
 
 #finalText{
     font-size:28px;
     max-width:80%;
-    line-height:1.6;
-}
-
-/* GLOW TEXT */
-.bigText{
-    font-size:45px;
-    animation: glow 1.5s infinite alternate;
-}
-
-@keyframes glow{
-    from{ text-shadow:0 0 10px #ff4d6d; }
-    to{ text-shadow:0 0 30px #ff99aa, 0 0 50px #ff4d6d; }
 }
 
 /* HEARTS */
@@ -113,42 +96,33 @@ button:hover{ transform:scale(1.05); }
 
         <p><b>Can I make you smile today? 😊</b></p>
 
-        <button class="yes" onclick="startStory()">Yes 💖</button>
-        <button class="no" id="noBtn">No 😅</button>
+        <!-- ✅ FIX ALIGN -->
+        <div class="btn-group">
+            <button class="yes" onclick="startStory()">Yes 💖</button>
+            <button class="no" id="noBtn">No 😅</button>
+        </div>
 
         <p id="result"></p>
     </div>
 </div>
 
+<!-- PIN -->
 <div id="pinScreen">
     <h2>🔐 Enter PIN</h2>
-    <p id="hint">(Hint: 1 = I, 4 = Love, 3 = You)</p>
+    <p id="hint">(Hint: ???)</p> <!-- ✅ HIDDEN -->
     <input id="pin" type="password">
     <button onclick="checkPin()">Enter</button>
 </div>
 
+<!-- FINAL -->
 <div id="finalScreen">
     <h1 id="finalText"></h1>
 </div>
 
-<!-- 🔥 MUSIC -->
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <script>
-
-/* 🔊 MUSIC */
-function playMusic(){
-    let music = document.getElementById("music");
-    music.volume = 0.5;
-    music.play().catch(()=>{});
-}
 
 /* STORY */
 function startStory(){
-    playMusic();
-
     let r=document.getElementById("result");
 
     let msgs=[
@@ -182,34 +156,48 @@ function checkPin(){
         showFinal();
     }else{
         attempts++;
-        document.getElementById("hint").innerText="Try again 😅";
+
+        // ✅ SHOW HINT ONLY AFTER WRONG
+        if(attempts==1){
+            document.getElementById("hint").innerText="Hint: 1 = I, 4 = Love, 3 = You 😳";
+        }else{
+            alert("Try again 😅");
+        }
     }
 }
 
-/* FINAL (TYPE EFFECT 💖) */
+/* FINAL MESSAGE (PAISA-ISA) */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
 
     f.style.display="flex";
 
-    let message = "I love you 💖";
+    let lines=[
+        "Hey...",
+        "I’ve been wanting to say this for a while...",
+        "You’ve become someone really important to me.",
+        "You make my days better.",
+        "You make me smile.",
+        "And I don’t want to hide it anymore...",
+        "I love you 💖",
+        "Stay with me a little longer..."
+    ];
+
     let i=0;
 
-    function type(){
-        if(i < message.length){
-            text.innerHTML += message.charAt(i);
+    function next(){
+        if(i<lines.length){
+            text.innerHTML = lines[i];
             i++;
-            setTimeout(type,100);
-        }else{
-            text.classList.add("bigText");
+            setTimeout(next,2000);
         }
     }
 
-    type();
+    next();
 }
 
-/* NO BUTTON */
+/* ✅ FIX NO BUTTON (HINDI HARANG) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
@@ -219,11 +207,14 @@ btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-    let maxX = card.clientWidth - btn.offsetWidth;
-    let maxY = card.clientHeight - btn.offsetHeight;
+    let maxX = card.clientWidth - btn.offsetWidth - 20;
+    let maxY = card.clientHeight - btn.offsetHeight - 20;
 
-    btn.style.left = Math.random()*maxX + "px";
-    btn.style.top = Math.random()*maxY + "px";
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
 }
 
 /* HEARTS */
