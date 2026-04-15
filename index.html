@@ -31,13 +31,18 @@ body {
     max-width:350px;
 }
 
-/* BUTTONS */
+/* ✅ FIXED BUTTONS ONLY */
 button {
     padding:10px 20px;
     border-radius:20px;
     border:none;
     margin:10px;
     cursor:pointer;
+    font-weight:bold;
+
+    position:relative;   /* FIX */
+    z-index:10;          /* FIX */
+    touch-action:manipulation; /* FIX */
 }
 
 .yes { background:#ff4d6d; color:white; }
@@ -130,8 +135,6 @@ function playMusic(){
     document.getElementById("music").play();
 }
 
-<script>
-
 /* STORY */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
@@ -176,7 +179,7 @@ function checkPin(){
     }
 }
 
-/* FINAL CINEMATIC */
+/* FINAL */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -185,27 +188,16 @@ function showFinal(){
 
     let lines=[
         "Hey...",
-        "",
         "I’ve been wanting to say this for a while...",
-        "",
         "You became someone really important to me.",
-        "",
         "You make my days better.",
         "You make me smile.",
-        "",
         "And I don’t want to hide it anymore...",
-        "",
         "I love you 💖",
-        "",
         "Not just a little...",
         "but more than I expected.",
-        "",
         "So please...",
-        "",
         "stay with me a little longer...",
-        "",
-        "Sayang...",
-        "",
         "luv yah 💖"
     ];
 
@@ -215,7 +207,7 @@ function showFinal(){
         if(i<lines.length){
             text.innerHTML=lines[i];
             i++;
-            setTimeout(next,2300);
+            setTimeout(next,2000);
         }else{
             text.className="bigText";
         }
@@ -224,14 +216,14 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON (FIXED 😈) */
+/* NO BUTTON (UNCHANGED LOGIC) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
 btn.addEventListener("mouseover",()=>{
     let rect=card.getBoundingClientRect();
 
-    let offsetX = Math.random() > 0.5 ? 120 : -120; // left or right
+    let offsetX = Math.random() > 0.5 ? 120 : -120;
     let offsetY = (Math.random()*100)-50;
 
     btn.style.position="fixed";
@@ -248,7 +240,6 @@ setInterval(()=>{
     document.body.appendChild(h);
     setTimeout(()=>h.remove(),6000);
 },300);
-
 </script>
 
 </body>
