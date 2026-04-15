@@ -31,8 +31,16 @@ body {
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     max-width: 360px;
     z-index: 10;
+     position: relative;
+    z-index: 10;
 }
 
+
+.flower, .light {
+    position: absolute;
+    pointer-events: none; /* 🔥 eto yung fix */
+}
+    
 /* BUTTONS */
 .btns {
     display: flex;
