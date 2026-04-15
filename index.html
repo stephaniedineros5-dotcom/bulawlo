@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Someone Special 💖</title>
+<title>For Sayang 💖</title>
 
 <style>
 body {
@@ -80,9 +81,15 @@ button:hover {
     text-align:center;
 }
 
+/* TEXT STYLE */
+#finalText {
+    font-size: 28px;
+    max-width: 80%;
+    transition: all 1s ease;
+}
+
 .show { opacity:1; }
 
-/* BIG TEXT */
 .bigText {
     font-size: 45px;
     animation: pop 1s ease forwards;
@@ -128,7 +135,6 @@ button:hover {
     <div class="card" id="card">
         <h1>Hi 💖</h1>
         <p>You make my days brighter 🌸</p>
-
         <p><b>Can I tell you something? 😊</b></p>
 
         <div class="btns">
@@ -150,7 +156,7 @@ button:hover {
 
 <script>
 
-/* TYPE EFFECT */
+/* TYPE TEXT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -163,7 +169,7 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY (MAS MAHABA + HINDI BITIN 💖) */
+/* STORY */
 function startStory(){
     let music = document.getElementById("music");
     music.volume = 0;
@@ -182,23 +188,16 @@ function startStory(){
     setTimeout(()=>typeText("Can I tell you something I've been keeping for a while?",40),2000);
     setTimeout(()=>typeText("I didn’t really know when it started...",40),5000);
     setTimeout(()=>typeText("but somewhere along the way...",40),8000);
-
     setTimeout(()=>typeText("you became someone really important to me.",40),11000);
-    setTimeout(()=>typeText("Like... more than just a normal friend.",40),14000);
+    setTimeout(()=>typeText("Talking to you became my favorite part of the day 💬",40),14000);
+    setTimeout(()=>typeText("You make things feel lighter... happier ✨",40),17000);
+    setTimeout(()=>typeText("And honestly...",40),20000);
+    setTimeout(()=>typeText("I’m really glad I met you 💖",40),23000);
 
-    setTimeout(()=>typeText("Talking to you became my favorite part of the day 💬",40),17000);
-    setTimeout(()=>typeText("You make things feel lighter, calmer... happier ✨",40),20000);
-
-    setTimeout(()=>typeText("And I don’t usually say things like this but...",40),23000);
-    setTimeout(()=>typeText("I’m really really glad I met you 💖",40),26000);
-
-    setTimeout(()=>typeText("Because honestly...",40),29000);
-    setTimeout(()=>typeText("life feels a little better with you in it.",40),32000);
-
-    setTimeout(showFinal,35000);
+    setTimeout(showFinal,26000);
 }
 
-/* FINAL (MAS MALAKAS 🎬) */
+/* FINAL CINEMATIC */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -206,59 +205,96 @@ function showFinal(){
     final.classList.add("show");
 
     let lines = [
-        "So yeah...",
-        "this might sound random...",
-        "but I just really wanted you to know",
-        "that you matter to me 💖",
-        "a lot more than you think",
-        "and I hope...",
-        "this doesn't change anything",
-        "but instead...",
-        "makes you smile 😊"
+        "Sayang...",
+        "I know this might be unexpected...",
+        "",
+        "but I’ve been wanting to tell you this for a while now.",
+        "",
+        "You became someone really important to me.",
+        "",
+        "You make my days better.",
+        "You make me smile without trying.",
+        "",
+        "And I don’t know if you feel the same way...",
+        "",
+        "but I just want to be honest.",
+        "",
+        "So here it is...",
+        "",
+        "Sayang...",
+        "",
+        "I love you. 💖",
+        "",
+        "And if it’s okay with you...",
+        "I’d love to stay by your side for a long time 😊"
     ];
 
-    let i=0;
+    let i = 0;
 
-    function next(){
+    function showNext(){
         if(i < lines.length){
-            text.innerHTML = lines[i];
-            i++;
-            setTimeout(next,2300);
-        } else {
-            setTimeout(()=>{
-                text.innerHTML = "💖 Stay with me 💖";
-                text.className = "bigText";
+
+            if(lines[i] === ""){
+                text.innerHTML = "";
+            } else {
+                text.innerHTML = lines[i];
+                text.style.opacity = 0;
+                text.style.transform = "translateY(20px)";
 
                 setTimeout(()=>{
-                    let extra = document.createElement("p");
-                    extra.innerText = "because I think I'm starting to really like you 😳";
-                    extra.style.marginTop = "20px";
-                    document.getElementById("finalScreen").appendChild(extra);
-                },2500);
+                    text.style.opacity = 1;
+                    text.style.transform = "translateY(0)";
+                },100);
+            }
 
+            i++;
+            setTimeout(showNext, 2500);
+        }
+        else {
+            setTimeout(()=>{
+                text.innerHTML = "💖 Stay with me, Sayang 💖";
+                text.className = "bigText";
             },2000);
         }
     }
 
-    next();
+    showNext();
 }
 
-/* NO BUTTON (HOVER = ILAG 😈) */
+/* NO BUTTON HOVER 😈 */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
-let result = document.getElementById("result");
 
 btn.addEventListener("mouseover", () => {
-
     let rect = card.getBoundingClientRect();
     let range = 150;
 
     btn.style.position = "fixed";
     btn.style.left = rect.left + (Math.random()*range*2-range) + "px";
     btn.style.top = rect.top + (Math.random()*range*2-range) + "px";
-
-    result.innerText = "Hey... why are you choosing no? 😢";
 });
+
+/* PETALS */
+setInterval(()=>{
+    let p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML="🌸";
+    p.style.left=Math.random()*100+"vw";
+    p.style.fontSize=(20+Math.random()*20)+"px";
+    p.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),8000);
+},300);
+
+/* LIGHTS */
+setInterval(()=>{
+    let l=document.createElement("div");
+    l.className="light";
+    l.style.left=Math.random()*100+"vw";
+    l.style.width=l.style.height=(5+Math.random()*10)+"px";
+    document.body.appendChild(l);
+    setTimeout(()=>l.remove(),6000);
+},500);
 
 </script>
 
