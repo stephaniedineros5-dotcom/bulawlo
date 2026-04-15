@@ -106,20 +106,11 @@ button{
     <h1 id="finalText"></h1>
 </div>
 
-<!-- ✅ MUSIC -->
+<script>
+
 <audio id="music" loop preload="auto">
     <source src="music.mp3" type="audio/mpeg">
 </audio>
-
-<script>
-
-/* 🔊 PLAY MUSIC (FIXED) */
-function playMusic(){
-    let music = document.getElementById("music");
-    music.volume = 100;
-    music.currentTime = 2:01;
-    music.play().catch(()=>{});
-}
 
 /* STORY */
 function startStory(){
