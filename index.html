@@ -179,6 +179,22 @@ function checkPin(){
     }
 }
 
+/* TYPE EFFECT */
+function typeLine(element, text, speed, callback){
+    let i = 0;
+    function typing(){
+        if(i < text.length){
+            element.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, speed);
+        }else{
+            element.innerHTML += "<br>";
+            if(callback) callback();
+        }
+    }
+    typing();
+}
+
 /* FINAL */
 function showFinal(){
     let f=document.getElementById("finalScreen");
@@ -205,10 +221,9 @@ function showFinal(){
     let i=0;
 
     function next(){
-        if(i<lines.length){
-            text.innerHTML += lines[i] + "<br>";
+        if(i < lines.length){
+            typeLine(text, lines[i], 40, next);
             i++;
-            setTimeout(next,2000);
         }else{
             text.classList.add("bigText");
         }
@@ -217,7 +232,7 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON */
+/* NO BUTTON (SAFE NEAR CARD) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
@@ -246,14 +261,14 @@ function moveButton(){
     let safe = false;
 
     while(!safe){
-        x = Math.random() * (window.innerWidth - btn.offsetWidth);
-        y = Math.random() * (window.innerHeight - btn.offsetHeight);
+        x = cardRect.left - 100 + Math.random() * (cardRect.width + 200);
+        y = cardRect.top - 100 + Math.random() * (cardRect.height + 200);
 
         if(
-            x < cardRect.left - 60 ||
-            x > cardRect.right + 60 ||
-            y < cardRect.top - 60 ||
-            y > cardRect.bottom + 60
+            x < cardRect.left - 20 ||
+            x > cardRect.right + 20 ||
+            y < cardRect.top - 20 ||
+            y > cardRect.bottom + 20
         ){
             safe = true;
         }
