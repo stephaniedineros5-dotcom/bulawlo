@@ -5,8 +5,6 @@
 <title>For Someone Special 💖</title>
 
 <style>
-
-/* BACKGROUND */
 body {
     margin: 0;
     font-family: 'Segoe UI', cursive;
@@ -32,13 +30,8 @@ body {
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     max-width: 350px;
-    position: relative;
     z-index: 10;
 }
-
-/* TEXT */
-h1 { color: #ff4d6d; }
-p { color: #333; }
 
 /* BUTTONS */
 .btns {
@@ -77,7 +70,7 @@ button:hover {
     left:0;
     width:100%;
     height:100%;
-    background: linear-gradient(135deg,#ffafbd,#ffc3a0);
+    background: black;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -90,24 +83,15 @@ button:hover {
 
 .show { opacity:1; }
 
-/* GLOW */
-.glow {
-    animation: glow 2s infinite alternate;
-}
-@keyframes glow {
-    from {text-shadow:0 0 10px #fff;}
-    to {text-shadow:0 0 25px #fff;}
+/* BIG FINAL TEXT */
+.bigText {
+    font-size: 42px;
+    animation: pop 1s ease forwards;
 }
 
-.flower, .light {
-    position: absolute;
-    pointer-events: none; /* 🔥 eto yung fix */
-}
-}
-@keyframes fall {
-    0% { transform: translateY(-10vh); opacity:0; }
-    50% { opacity:1; }
-    100% { transform: translateY(110vh); opacity:0; }
+@keyframes pop {
+    0% { transform: scale(0); opacity:0; }
+    100% { transform: scale(1); opacity:1; }
 }
 
 /* LIGHTS */
@@ -115,13 +99,14 @@ button:hover {
     position: absolute;
     border-radius: 50%;
     background: rgba(255,255,255,0.6);
+    pointer-events: none;
     animation: floatUp 6s linear infinite;
 }
+
 @keyframes floatUp {
     0% {transform: translateY(100vh);}
     100% {transform: translateY(-10vh);}
 }
-
 </style>
 </head>
 
@@ -145,7 +130,7 @@ button:hover {
 
 <!-- FINAL -->
 <div id="finalScreen">
-    <h1 id="finalText" class="glow"></h1>
+    <h1 id="finalText"></h1>
 </div>
 
 <!-- MUSIC -->
@@ -155,6 +140,7 @@ button:hover {
 
 <script>
 
+/* TEXT EFFECT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -167,31 +153,28 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY (MAS MAHABA NA 💖) */
+/* STORY (ENGLISH 💖) */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
 
     typeText("Wait... 😳",40);
 
-    setTimeout(()=>typeText("Before anything else...",40),2000);
-    setTimeout(()=>typeText("Can I be honest with you for a bit?",40),4000);
-    setTimeout(()=>typeText("I didn’t expect we’d get this close...",40),6000);
-    setTimeout(()=>typeText("but somehow, here we are 😊",40),8000);
+    setTimeout(()=>typeText("Can I be honest with you for a moment?",40),2000);
+    setTimeout(()=>typeText("I didn’t expect you to become this important to me...",40),4000);
+    setTimeout(()=>typeText("but somehow, you did.",40),6000);
+    setTimeout(()=>typeText("And I’m really glad you did 😊",40),8000);
 
-    setTimeout(()=>typeText("And I’m actually really glad...",40),10000);
-    setTimeout(()=>typeText("because talking to you feels different 💬",40),12000);
-    setTimeout(()=>typeText("like... lighter, easier, happier ✨",40),14000);
+    setTimeout(()=>typeText("Talking to you feels different...",40),10000);
+    setTimeout(()=>typeText("in a good way.",40),12000);
+    setTimeout(()=>typeText("You make things feel lighter... and happier ✨",40),14000);
 
-    setTimeout(()=>typeText("You became someone I look forward to talking to",40),16000);
-    setTimeout(()=>typeText("and I didn’t even notice when it started 😳",40),18000);
+    setTimeout(()=>typeText("And honestly...",40),16000);
+    setTimeout(()=>typeText("I really like having you in my life 💖",40),18000);
 
-    setTimeout(()=>typeText("So yeah...",40),20000);
-    setTimeout(()=>typeText("I just wanted you to know that 💖",40),22000);
-
-    setTimeout(showFinal,24000);
+    setTimeout(showFinal,21000);
 }
 
-/* FINAL CINEMATIC (HINDI NA BITIN 🎬) */
+/* FINAL (CINEMATIC 🎬) */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -199,31 +182,33 @@ function showFinal(){
     final.classList.add("show");
 
     let lines = [
-        "And maybe this is random...",
-        "but I’m really grateful I met you 💖",
-        "you became someone important to me",
+        "So yeah...",
+        "I just wanted to tell you that 💖",
+        "I really appreciate you",
         "more than you probably realize 😳",
-        "and honestly...",
-        "I don’t want to lose this",
-        "I don’t want to lose you",
-        "so if it’s okay...",
-        "stay with me a little longer? 😊"
+        "and I hope...",
+        "you stay in my life for a long time 😊"
     ];
 
     let i=0;
 
     function next(){
-        if(i<lines.length){
-            text.innerHTML=lines[i];
+        if(i < lines.length){
+            text.innerHTML = lines[i];
             i++;
-            setTimeout(next,2500);
+            setTimeout(next,2000);
+        } else {
+            setTimeout(()=>{
+                text.innerHTML = "💖 Stay with me 💖";
+                text.classList.add("bigText");
+            },2000);
         }
     }
 
     next();
 }
 
-/* NO BUTTON (LEVELING SYSTEM 😈) */
+/* NO BUTTON (OUTSIDE CARD BUT NEAR 😈) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
 let result = document.getElementById("result");
@@ -234,38 +219,42 @@ btn.addEventListener("click", (e) => {
     e.preventDefault();
     clicks++;
 
-    let maxX = card.clientWidth - btn.offsetWidth;
-    let maxY = card.clientHeight - btn.offsetHeight;
+    let rect = card.getBoundingClientRect();
+    let range = 150;
 
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
+    let x = rect.left + (Math.random()*range*2 - range);
+    let y = rect.top + (Math.random()*range*2 - range);
 
-    btn.style.position = "absolute";
+    btn.style.position = "fixed";
     btn.style.left = x + "px";
     btn.style.top = y + "px";
 
-    /* personality 😏 */
     if(clicks == 1){
-        result.innerText = "No? sure ka? 😏";
+        result.innerText = "No? Are you sure? 😏";
     }
     else if(clicks == 2){
-        result.innerText = "Grabe ka naman 😂";
+        result.innerText = "Wow... really? 😂";
     }
     else if(clicks == 3){
-        result.innerText = "Try mo pa ulit... di mo yan mahuhuli 😈";
+        result.innerText = "Come on, try again 😈";
     }
-    else if(clicks == 4){
-        result.innerText = "Okay, medyo determined ka ah 😳";
-    }
-    else if(clicks == 5){
-        result.innerText = "Sige... pahihirapan na kita 😜";
-        btn.style.transform = "scale(0.7)";
-    }
-    else if(clicks >= 6){
-        result.innerText = "Ayan na... di mo na talaga yan ma-click 😂";
-        btn.style.transform = "scale(0.5)";
+    else if(clicks >= 4){
+        result.innerText = "You’re not catching me that easily 😜";
+        btn.style.transform = "scale(0.6)";
     }
 });
+
+/* LIGHTS */
+setInterval(()=>{
+    let l=document.createElement("div");
+    l.className="light";
+    l.style.left=Math.random()*100+"vw";
+    l.style.width=l.style.height=(5+Math.random()*10)+"px";
+    document.body.appendChild(l);
+
+    setTimeout(()=>l.remove(),6000);
+},500);
+
 </script>
 
 </body>
