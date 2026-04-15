@@ -5,12 +5,10 @@
 <title>For Someone Special 💖</title>
 
 <style>
-
-/* BACKGROUND */
 body {
     margin: 0;
     font-family: 'Segoe UI', cursive;
-    background: linear-gradient(135deg, #ffd1dc, #fbc2eb, #a18cd1);
+    background: linear-gradient(135deg, #ff9a9e, #fad0c4);
     overflow: hidden;
 }
 
@@ -22,22 +20,20 @@ body {
     height: 100vh;
 }
 
-/* Card (Glass effect) */
+/* Card */
 .card {
-    position: relative;
-    background: rgba(255,255,255,0.3);
-    backdrop-filter: blur(15px);
+    background: rgba(255,255,255,0.95);
     padding: 40px;
     border-radius: 25px;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.2);
     max-width: 350px;
+    animation: float 3s ease-in-out infinite;
 }
 
 h1 { color: #ff4d6d; }
-p { color: #333; }
+p { color: #444; }
 
-/* Buttons */
 button {
     padding: 12px 25px;
     border-radius: 25px;
@@ -52,37 +48,44 @@ button:hover {
     transform: scale(1.1);
 }
 
-.yes { 
-    background: linear-gradient(45deg,#ff4d6d,#ff8fab);
-    color: white;
-}
+.yes { background: #ff4d6d; color: white; }
+.no { background: #ddd; }
 
-.no { 
-    background: #eee;
-    position: absolute;
-}
-
-/* FINAL SCREEN */
-#finalScreen {
+/* SCREENS */
+.screen {
     position: fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background: linear-gradient(135deg,#ffafbd,#ffc3a0);
     display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
     opacity:0;
-    transition:1.5s;
+    pointer-events:none;
+    transition:1s;
     color:white;
     text-align:center;
 }
 
-.show { opacity:1; }
+.show {
+    opacity:1;
+    pointer-events:all;
+}
 
-/* Glow */
+#pinScreen { background:#6a11cb; }
+#finalScreen { background:black; }
+
+/* input */
+input {
+    padding:10px;
+    border-radius:10px;
+    border:none;
+    text-align:center;
+}
+
+/* glow */
 .glow {
     animation: glow 2s infinite alternate;
 }
@@ -91,38 +94,31 @@ button:hover {
     to {text-shadow:0 0 25px #fff;}
 }
 
-/* FLOWERS */
-.flower {
-    position: absolute;
-    animation: fall linear infinite;
-}
-@keyframes fall {
-    0% { transform: translateY(-10vh); opacity:0; }
-    50% { opacity:1; }
-    100% { transform: translateY(110vh); opacity:0; }
-}
-
-/* FLOATING LIGHTS */
-.light {
-    position: absolute;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.6);
+/* hearts */
+.heart {
+    position:absolute;
     animation: floatUp 6s linear infinite;
 }
 @keyframes floatUp {
-    0% {transform: translateY(100vh);}
-    100% {transform: translateY(-10vh);}
+    0%{transform:translateY(100vh);opacity:0;}
+    50%{opacity:1;}
+    100%{transform:translateY(-10vh);opacity:0;}
 }
 
+/* float */
+@keyframes float {
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(-10px);}
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-    <div class="card" id="card">
+    <div class="card">
         <h1>Hi 💖</h1>
-        <p>You make my days brighter 🌸</p>
+        <p>You make my days better 🌸</p>
 
         <p><b>Can I tell you something? 😊</b></p>
 
@@ -133,9 +129,17 @@ button:hover {
     </div>
 </div>
 
+<!-- PIN -->
+<div id="pinScreen" class="screen">
+    <h1>🔒 Enter Secret Code</h1>
+    <p id="hint">Hint: important number 😉</p>
+    <input type="password" id="pin">
+    <button onclick="checkPin()">Unlock 💖</button>
+</div>
+
 <!-- FINAL -->
-<div id="finalScreen">
-    <h1 id="finalText" class="glow"></h1>
+<div id="finalScreen" class="screen">
+    <h1 id="finalText"></h1>
 </div>
 
 <!-- MUSIC -->
@@ -144,6 +148,8 @@ button:hover {
 </audio>
 
 <script>
+
+let noClicks = 0;
 
 /* typing */
 function typeText(text, delay) {
@@ -166,14 +172,38 @@ function startStory(){
 
     setTimeout(()=>typeText("I just want to say something...",40),2000);
     setTimeout(()=>typeText("I enjoy talking to you 💬",40),4000);
-    setTimeout(()=>typeText("You make things feel lighter ✨",40),6000);
+    setTimeout(()=>typeText("You make things lighter ✨",40),6000);
     setTimeout(()=>typeText("And honestly...",40),8000);
-    setTimeout(()=>typeText("You mean something to me 💖",40),10000);
+    setTimeout(()=>typeText("You matter to me 💖",40),10000);
 
-    setTimeout(showFinal,13000);
+    setTimeout(()=>{
+        document.getElementById("pinScreen").classList.add("show");
+    },12000);
 }
 
-/* FINAL */
+/* PIN */
+let attempts = 0;
+
+function checkPin(){
+    let val = document.getElementById("pin").value;
+
+    if(val==="143"){
+        document.getElementById("pinScreen").classList.remove("show");
+        showFinal();
+    } else {
+        attempts++;
+
+        if(attempts==1){
+            document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
+        } else if(attempts==2){
+            alert("Close 😏 try again");
+        } else {
+            alert("Grabe ka 😭 focus ka nga hahaha");
+        }
+    }
+}
+
+/* FINAL CINEMATIC */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -183,64 +213,61 @@ function showFinal(){
     let lines = [
         "So yeah...",
         "I really appreciate you 💖",
-        "More than you think 😳",
+        "Like... a lot 😳",
         "And I hope...",
-        "you stay in my life 🌸",
-        "because honestly...",
-        "you make everything better ✨"
+        "you stay in my life 😊"
     ];
 
     let i=0;
 
-    function next(){
+    function nextLine(){
         if(i<lines.length){
             text.innerHTML=lines[i];
+            text.classList.add("glow");
             i++;
-            setTimeout(next,2200);
+            setTimeout(nextLine,2000);
+        } else {
+            launchHearts();
         }
     }
 
-    next();
+    nextLine();
 }
 
-/* NO BUTTON FIX */
+/* NO BUTTON (EVOLVING 😈) */
 let btn = document.getElementById("noBtn");
-let card = document.getElementById("card");
-
-btn.style.top = "120px";
-btn.style.left = "120px";
 
 btn.addEventListener("mouseover",()=>{
-    let maxX = card.clientWidth - btn.offsetWidth;
-    let maxY = card.clientHeight - btn.offsetHeight;
+    noClicks++;
 
-    btn.style.left = Math.random()*maxX + "px";
-    btn.style.top = Math.random()*maxY + "px";
+    let maxX = window.innerWidth - btn.offsetWidth;
+    let maxY = window.innerHeight - btn.offsetHeight;
+
+    let x = Math.random()*maxX;
+    let y = Math.random()*maxY;
+
+    btn.style.position="fixed";
+    btn.style.left=x+"px";
+    btn.style.top=y+"px";
+
+    if(noClicks==3){
+        document.getElementById("result").innerText="You really trying to press no? 😏";
+    }
 });
 
-/* FLOWERS */
-setInterval(()=>{
-    let f=document.createElement("div");
-    f.className="flower";
-    f.innerHTML="🌸";
-    f.style.left=Math.random()*100+"vw";
-    f.style.fontSize=(20+Math.random()*20)+"px";
-    f.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(f);
+/* hearts */
+function launchHearts(){
+    setInterval(()=>{
+        let h=document.createElement("div");
+        h.className="heart";
+        h.innerHTML="💖";
+        h.style.left=Math.random()*100+"vw";
+        h.style.fontSize=(20+Math.random()*20)+"px";
+        document.body.appendChild(h);
 
-    setTimeout(()=>f.remove(),8000);
-},400);
-
-/* LIGHTS */
-setInterval(()=>{
-    let l=document.createElement("div");
-    l.className="light";
-    l.style.left=Math.random()*100+"vw";
-    l.style.width=l.style.height=(5+Math.random()*10)+"px";
-    document.body.appendChild(l);
-
-    setTimeout(()=>l.remove(),6000);
-},500);
+        setTimeout(()=>h.remove(),6000);
+    },200);
+}
 
 </script>
 
