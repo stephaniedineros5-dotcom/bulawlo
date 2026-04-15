@@ -12,94 +12,82 @@ body {
     overflow: hidden;
 }
 
-/* Container */
+/* CENTER */
 .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
 }
 
-/* Card */
+/* CARD */
 .card {
+    position:relative;
     background: rgba(255,255,255,0.9);
-    padding: 40px;
-    border-radius: 25px;
-    text-align: center;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    max-width: 350px;
-    animation: float 3s ease-in-out infinite;
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    box-shadow:0 10px 40px rgba(0,0,0,0.2);
+    max-width:350px;
 }
 
-h1 { color: #ff4d6d; }
-p { color: #444; }
-
+/* BUTTONS */
 button {
-    padding: 10px 20px;
-    border-radius: 20px;
-    border: none;
-    margin: 10px;
-    cursor: pointer;
+    padding:10px 20px;
+    border-radius:20px;
+    border:none;
+    margin:10px;
+    cursor:pointer;
 }
 
-.yes { background: #ff4d6d; color: white; }
-.no { background: #ddd; }
+.yes { background:#ff4d6d; color:white; }
+.no { background:#ddd; }
 
-/* FINAL SCREEN */
-#finalScreen {
-    position: fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background: linear-gradient(135deg, #ff758c, #ff7eb3);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    flex-direction: column;
+/* PIN SCREEN */
+#pinScreen{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:black;
+    color:white;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
 }
 
-#finalScreen h1 {
-    font-size: 28px;
+/* FINAL */
+#finalScreen{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:black;
+    color:white;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+    text-align:center;
 }
 
-/* Hearts */
-.heart {
-    position: absolute;
-    color: #ff4d6d;
+#finalText{
+    font-size:28px;
+    transition:1s;
+}
+
+.bigText{
+    font-size:45px;
+}
+
+/* hearts */
+.heart{
+    position:absolute;
     animation: floatUp 6s linear infinite;
 }
 
-/* Flowers */
-.flower {
-    position: absolute;
-    animation: fall 8s linear infinite;
-}
-
-/* Confetti */
-.confetti {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    animation: fall 3s linear infinite;
-}
-
-@keyframes floatUp {
-    0% {transform: translateY(100vh); opacity:0;}
-    50% {opacity:1;}
-    100% {transform: translateY(-10vh); opacity:0;}
-}
-
-@keyframes fall {
-    0% {transform: translateY(-10vh);}
-    100% {transform: translateY(110vh);}
-}
-
-@keyframes float {
-    0%,100% {transform: translateY(0);}
-    50% {transform: translateY(-10px);}
+@keyframes floatUp{
+    0%{transform:translateY(100vh);}
+    100%{transform:translateY(-10vh);}
 }
 </style>
 </head>
@@ -107,11 +95,9 @@ button {
 <body>
 
 <div class="container">
-    <div class="card">
+    <div class="card" id="card">
         <h1>Hi Bulol 💖</h1>
-        <p>You make my days a little brighter 🌸✨</p>
-
-        <p><b>Can I make you smile today? 😊</b></p>
+        <p>You make my days brighter 🌸</p>
 
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
@@ -120,188 +106,141 @@ button {
     </div>
 </div>
 
-<!-- FINAL SCREEN -->
-<div id="finalScreen">
-    <h1>
-        💖 I’m so grateful that I met you 💖 <br><br>
-        you mean more to me than you probably realize 😊
-    </h1>
-    <p>✨ Thank you for existing ✨</p>
+<!-- PIN -->
+<div id="pinScreen">
+    <h2>🔐 Enter PIN</h2>
+    <p id="hint">(Hint: our special number)</p>
+    <input id="pin" type="password">
+    <button onclick="checkPin()">Enter</button>
 </div>
 
-<!-- MUSIC -->
+<!-- FINAL -->
+<div id="finalScreen">
+    <h1 id="finalText"></h1>
+</div>
+
 <audio id="music" loop>
-<source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+<source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b6d9b.mp3">
 </audio>
 
 <script>
 
-/* Typing effect */
-function typeText(text, delay) {
-    let i = 0;
-    let result = document.getElementById("result");
-    result.innerHTML = "";
+/* STORY */
+function startStory(){
+    document.getElementById("music").play().catch(()=>{});
+    let r=document.getElementById("result");
 
-    let interval = setInterval(() => {
-        result.innerHTML += text[i];
-        i++;
-        if (i >= text.length) clearInterval(interval);
-    }, delay);
-}
+    let msgs=[
+        "Wait… don’t go yet 😳",
+        "I want to tell you something...",
+        "and I hope you listen...",
+        "because this means a lot to me 💖"
+    ];
 
-/* Story */
-function startStory() {
-
-    let music = document.getElementById("music");
-    music.play().catch(()=>{});
-
-    typeText("Wait… don’t go yet 😳💖", 40);
-
-    setTimeout(()=> typeText("I just wanted to tell you something… 🌸", 40), 2000);
-    setTimeout(()=> typeText("I really enjoy talking to you 💬", 40), 4000);
-    setTimeout(()=> typeText("You make things feel lighter ✨", 40), 6000);
-    setTimeout(()=> typeText("And honestly… 😳", 40), 8000);
-    setTimeout(()=> typeText("You became someone I genuinely care about 💖", 40), 10000);
-
-    setTimeout(()=>{
-        document.getElementById("finalScreen").style.display = "flex";
-        launchConfetti();
-    }, 13000);
-}
-
-/* NO BUTTON FIX */
-let noBtn = document.getElementById("noBtn");
-
-noBtn.addEventListener("mouseover", () => {
-    let x = Math.random() * (window.innerWidth - 100);
-    let y = Math.random() * (window.innerHeight - 50);
-
-    noBtn.style.position = "fixed";
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-});
-
-/* Hearts */
-setInterval(() => {
-    let heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "💖";
-    heart.style.left = Math.random()*100 + "vw";
-    heart.style.fontSize = (20 + Math.random()*20) + "px";
-    document.body.appendChild(heart);
-    setTimeout(()=> heart.remove(), 6000);
-}, 200);
-
-/* Flowers */
-setInterval(() => {
-    let flower = document.createElement("div");
-    flower.className = "flower";
-    flower.innerHTML = "🌸";
-    flower.style.left = Math.random()*100 + "vw";
-    flower.style.fontSize = (20 + Math.random()*20) + "px";
-    document.body.appendChild(flower);
-    setTimeout(()=> flower.remove(), 8000);
-}, 600);
-
-/* Confetti */
-function launchConfetti() {
-    for (let i = 0; i < 80; i++) {
-        let confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.left = Math.random()*100 + "vw";
-        confetti.style.background = ["#fff","#ff4d6d","#ffd1dc"][Math.floor(Math.random()*3)];
-        document.body.appendChild(confetti);
-
-        setTimeout(()=> confetti.remove(), 3000);
+    let i=0;
+    function next(){
+        if(i<msgs.length){
+            r.innerText=msgs[i];
+            i++;
+            setTimeout(next,2000);
+        }else{
+            document.getElementById("pinScreen").style.display="flex";
+        }
     }
+    next();
 }
 
-let attempts = 0;
+/* PIN */
+let attempts=0;
 
 function checkPin(){
-    let val = document.getElementById("pin").value;
+    let val=document.getElementById("pin").value;
 
     if(val==="143"){
-        document.getElementById("pinScreen").classList.remove("show");
+        document.getElementById("pinScreen").style.display="none";
         showFinal();
-    } else {
+    }else{
         attempts++;
-
         if(attempts==1){
             document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
-        } else if(attempts==2){
-            alert("Close 😏 try again");
-        } else {
-            alert("Grabe ka 😭 focus ka nga hahaha");
+        }else{
+            alert("Try again 😅");
         }
     }
 }
 
 /* FINAL CINEMATIC */
 function showFinal(){
-    let final = document.getElementById("finalScreen");
-    let text = document.getElementById("finalText");
+    let f=document.getElementById("finalScreen");
+    let text=document.getElementById("finalText");
 
-    final.classList.add("show");
+    f.style.display="flex";
 
-    let lines = [
-        "So yeah...",
-        "I really appreciate you 💖",
-        "Like... a lot 😳",
-        "And I hope...",
-        "you stay in my life 😊"
+    let lines=[
+        "Hey...",
+        "",
+        "I’ve been wanting to say this for a while...",
+        "",
+        "You became someone really important to me.",
+        "",
+        "You make my days better.",
+        "You make me smile.",
+        "",
+        "And I don’t want to hide it anymore...",
+        "",
+        "I love you 💖",
+        "",
+        "Not just a little...",
+        "but more than I expected.",
+        "",
+        "So please...",
+        "",
+        "stay with me a little longer...",
+        "",
+        "Sayang...",
+        "",
+        "luv yah 💖"
     ];
 
     let i=0;
 
-    function nextLine(){
+    function next(){
         if(i<lines.length){
             text.innerHTML=lines[i];
-            text.classList.add("glow");
             i++;
-            setTimeout(nextLine,2000);
-        } else {
-            launchHearts();
+            setTimeout(next,2300);
+        }else{
+            text.className="bigText";
         }
     }
 
-    nextLine();
+    next();
 }
 
-/* NO BUTTON (EVOLVING 😈) */
-let btn = document.getElementById("noBtn");
+/* NO BUTTON (FIXED 😈) */
+let btn=document.getElementById("noBtn");
+let card=document.getElementById("card");
 
 btn.addEventListener("mouseover",()=>{
-    noClicks++;
+    let rect=card.getBoundingClientRect();
 
-    let maxX = window.innerWidth - btn.offsetWidth;
-    let maxY = window.innerHeight - btn.offsetHeight;
-
-    let x = Math.random()*maxX;
-    let y = Math.random()*maxY;
+    let offsetX = Math.random() > 0.5 ? 120 : -120; // left or right
+    let offsetY = (Math.random()*100)-50;
 
     btn.style.position="fixed";
-    btn.style.left=x+"px";
-    btn.style.top=y+"px";
-
-    if(noClicks==3){
-        document.getElementById("result").innerText="You really trying to press no? 😏";
-    }
+    btn.style.left=(rect.left + offsetX)+"px";
+    btn.style.top=(rect.top + offsetY)+"px";
 });
 
-/* hearts */
-function launchHearts(){
-    setInterval(()=>{
-        let h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="💖";
-        h.style.left=Math.random()*100+"vw";
-        h.style.fontSize=(20+Math.random()*20)+"px";
-        document.body.appendChild(h);
-
-        setTimeout(()=>h.remove(),6000);
-    },200);
-}
+/* HEARTS */
+setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="💖";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),6000);
+},300);
 
 </script>
 
