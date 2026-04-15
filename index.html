@@ -14,7 +14,7 @@ body {
     overflow: hidden;
 }
 
-/* CENTER */
+/* Container */
 .container {
     display: flex;
     justify-content: center;
@@ -22,7 +22,7 @@ body {
     height: 100vh;
 }
 
-/* CARD */
+/* Card (Glass effect) */
 .card {
     position: relative;
     background: rgba(255,255,255,0.3);
@@ -32,25 +32,17 @@ body {
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     max-width: 350px;
-    position: relative;
-    z-index: 10;
 }
 
-/* TEXT */
 h1 { color: #ff4d6d; }
 p { color: #333; }
 
-/* BUTTONS */
-.btns {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-}
-
+/* Buttons */
 button {
     padding: 12px 25px;
     border-radius: 25px;
     border: none;
+    margin: 10px;
     cursor: pointer;
     font-weight: bold;
     transition: 0.3s;
@@ -60,14 +52,14 @@ button:hover {
     transform: scale(1.1);
 }
 
-.yes {
+.yes { 
     background: linear-gradient(45deg,#ff4d6d,#ff8fab);
     color: white;
 }
 
-.no {
+.no { 
     background: #eee;
-    position: relative;
+    position: absolute;
 }
 
 /* FINAL SCREEN */
@@ -90,7 +82,7 @@ button:hover {
 
 .show { opacity:1; }
 
-/* GLOW */
+/* Glow */
 .glow {
     animation: glow 2s infinite alternate;
 }
@@ -99,10 +91,10 @@ button:hover {
     to {text-shadow:0 0 25px #fff;}
 }
 
-.flower, .light {
+/* FLOWERS */
+.flower {
     position: absolute;
-    pointer-events: none; /* 🔥 eto yung fix */
-}
+    animation: fall linear infinite;
 }
 @keyframes fall {
     0% { transform: translateY(-10vh); opacity:0; }
@@ -110,7 +102,7 @@ button:hover {
     100% { transform: translateY(110vh); opacity:0; }
 }
 
-/* LIGHTS */
+/* FLOATING LIGHTS */
 .light {
     position: absolute;
     border-radius: 50%;
@@ -134,10 +126,8 @@ button:hover {
 
         <p><b>Can I tell you something? 😊</b></p>
 
-        <div class="btns">
-            <button class="yes" onclick="startStory()">Yes 💖</button>
-            <button class="no" id="noBtn">No 😅</button>
-        </div>
+        <button class="yes" onclick="startStory()">Yes 💖</button>
+        <button class="no" id="noBtn">No 😅</button>
 
         <p id="result"></p>
     </div>
@@ -155,6 +145,7 @@ button:hover {
 
 <script>
 
+/* typing */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -167,31 +158,22 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY (MAS MAHABA NA 💖) */
+/* story */
 function startStory(){
     document.getElementById("music").play().catch(()=>{});
 
     typeText("Wait... 😳",40);
 
-    setTimeout(()=>typeText("Before anything else...",40),2000);
-    setTimeout(()=>typeText("Can I be honest with you for a bit?",40),4000);
-    setTimeout(()=>typeText("I didn’t expect we’d get this close...",40),6000);
-    setTimeout(()=>typeText("but somehow, here we are 😊",40),8000);
+    setTimeout(()=>typeText("I just want to say something...",40),2000);
+    setTimeout(()=>typeText("I enjoy talking to you 💬",40),4000);
+    setTimeout(()=>typeText("You make things feel lighter ✨",40),6000);
+    setTimeout(()=>typeText("And honestly...",40),8000);
+    setTimeout(()=>typeText("You mean something to me 💖",40),10000);
 
-    setTimeout(()=>typeText("And I’m actually really glad...",40),10000);
-    setTimeout(()=>typeText("because talking to you feels different 💬",40),12000);
-    setTimeout(()=>typeText("like... lighter, easier, happier ✨",40),14000);
-
-    setTimeout(()=>typeText("You became someone I look forward to talking to",40),16000);
-    setTimeout(()=>typeText("and I didn’t even notice when it started 😳",40),18000);
-
-    setTimeout(()=>typeText("So yeah...",40),20000);
-    setTimeout(()=>typeText("I just wanted you to know that 💖",40),22000);
-
-    setTimeout(showFinal,24000);
+    setTimeout(showFinal,13000);
 }
 
-/* FINAL CINEMATIC (HINDI NA BITIN 🎬) */
+/* FINAL */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -199,15 +181,13 @@ function showFinal(){
     final.classList.add("show");
 
     let lines = [
-        "And maybe this is random...",
-        "but I’m really grateful I met you 💖",
-        "you became someone important to me",
-        "more than you probably realize 😳",
-        "and honestly...",
-        "I don’t want to lose this",
-        "I don’t want to lose you",
-        "so if it’s okay...",
-        "stay with me a little longer? 😊"
+        "So yeah...",
+        "I really appreciate you 💖",
+        "More than you think 😳",
+        "And I hope...",
+        "you stay in my life 🌸",
+        "because honestly...",
+        "you make everything better ✨"
     ];
 
     let i=0;
@@ -216,58 +196,53 @@ function showFinal(){
         if(i<lines.length){
             text.innerHTML=lines[i];
             i++;
-            setTimeout(next,2500);
+            setTimeout(next,2200);
         }
     }
 
     next();
 }
 
-/* NO BUTTON (LEVELING SYSTEM 😈) */
+/* NO BUTTON FIX */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
-let result = document.getElementById("result");
 
-let clicks = 0;
+btn.style.top = "120px";
+btn.style.left = "120px";
 
-btn.addEventListener("click", (e) => {
-    e.preventDefault();
-    clicks++;
-
+btn.addEventListener("mouseover",()=>{
     let maxX = card.clientWidth - btn.offsetWidth;
     let maxY = card.clientHeight - btn.offsetHeight;
 
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
-
-    btn.style.position = "absolute";
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
-
-    /* personality 😏 */
-    if(clicks == 1){
-        result.innerText = "No? sure ka? 😏";
-    }
-    else if(clicks == 2){
-        result.innerText = "Grabe ka naman 😂";
-    }
-    else if(clicks == 3){
-        result.innerText = "Try mo pa ulit... di mo yan mahuhuli 😈";
-    }
-    else if(clicks == 4){
-        result.innerText = "Okay, medyo determined ka ah 😳";
-    }
-    else if(clicks == 5){
-        result.innerText = "Sige... pahihirapan na kita 😜";
-        btn.style.transform = "scale(0.7)";
-    }
-    else if(clicks >= 6){
-        result.innerText = "Ayan na... di mo na talaga yan ma-click 😂";
-        btn.style.transform = "scale(0.5)";
-    }
+    btn.style.left = Math.random()*maxX + "px";
+    btn.style.top = Math.random()*maxY + "px";
 });
+
+/* FLOWERS */
+setInterval(()=>{
+    let f=document.createElement("div");
+    f.className="flower";
+    f.innerHTML="🌸";
+    f.style.left=Math.random()*100+"vw";
+    f.style.fontSize=(20+Math.random()*20)+"px";
+    f.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(f);
+
+    setTimeout(()=>f.remove(),8000);
+},400);
+
+/* LIGHTS */
+setInterval(()=>{
+    let l=document.createElement("div");
+    l.className="light";
+    l.style.left=Math.random()*100+"vw";
+    l.style.width=l.style.height=(5+Math.random()*10)+"px";
+    document.body.appendChild(l);
+
+    setTimeout(()=>l.remove(),6000);
+},500);
+
 </script>
 
 </body>
 </html>
-cdn.pixabay.co
