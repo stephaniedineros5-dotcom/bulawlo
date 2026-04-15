@@ -19,6 +19,7 @@ body{
     height:100vh;
 }
 
+/* FORM */
 .card{
     background:rgba(255,255,255,0.9);
     padding:40px;
@@ -27,9 +28,16 @@ body{
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
 
-    /* FIX CLICK */
     position:relative;
-    z-index:10;
+    z-index:1;
+
+    animation:wave 6s ease-in-out infinite;
+}
+
+@keyframes wave{
+    0%{transform:translateY(0);}
+    50%{transform:translateY(-8px);}
+    100%{transform:translateY(0);}
 }
 
 button{
@@ -39,15 +47,12 @@ button{
     margin:10px;
     cursor:pointer;
     font-weight:bold;
-
-    /* FIX CLICK */
-    position:relative;
-    z-index:20;
 }
 
 .yes{background:#ff4d6d;color:white;}
 .no{background:#ddd;}
 
+/* SCREENS (HIGH PRIORITY) */
 #pinScreen, #finalScreen{
     position:fixed;
     top:0;left:0;
@@ -59,6 +64,8 @@ button{
     align-items:center;
     flex-direction:column;
     text-align:center;
+
+    z-index:9999; /* ✅ ALWAYS ON TOP */
 }
 
 #finalText{
@@ -114,6 +121,7 @@ button{
 /* STORY */
 function startStory(){
     let r=document.getElementById("result");
+    let card=document.getElementById("card");
 
     let msgs=[
         "Wait… don’t go yet 😳",
@@ -129,6 +137,7 @@ function startStory(){
             i++;
             setTimeout(next,2000);
         }else{
+            card.style.display="none"; /* ✅ HIDE FORM */
             document.getElementById("pinScreen").style.display="flex";
         }
     }
@@ -154,7 +163,7 @@ function checkPin(){
     }
 }
 
-/* FINAL (PAISA-ISA) */
+/* FINAL MESSAGE */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -191,7 +200,7 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON (MOVE + MESSAGE) */
+/* NO BUTTON */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 let result=document.getElementById("result");
@@ -212,12 +221,9 @@ btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-
-    // show message
     result.innerText = messages[msgIndex];
     msgIndex = (msgIndex + 1) % messages.length;
 
-    // move outside but near
     let rect = card.getBoundingClientRect();
     let distance = 70;
 
