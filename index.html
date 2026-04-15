@@ -52,7 +52,7 @@ button{
 .yes{background:#ff4d6d;color:white;}
 .no{background:#ddd;}
 
-/* SCREENS (HIGH PRIORITY) */
+/* SCREENS */
 #pinScreen, #finalScreen{
     position:fixed;
     top:0;left:0;
@@ -65,16 +65,44 @@ button{
     flex-direction:column;
     text-align:center;
 
-    z-index:9999; /* ✅ ALWAYS ON TOP */
+    z-index:9999;
 }
 
+/* FINAL TEXT ✨ IMPROVED */
 #finalText{
     font-size:28px;
     max-width:80%;
+    line-height:1.6;
+    animation: fadeGlow 2.5s ease-in-out forwards;
+}
+
+/* glow + fade + soft pulse */
+@keyframes fadeGlow{
+    0%{
+        opacity:0;
+        transform:scale(0.95);
+        text-shadow:none;
+    }
+    50%{
+        opacity:1;
+        transform:scale(1);
+        text-shadow:0 0 10px #ff4d6d;
+    }
+    100%{
+        opacity:1;
+        transform:scale(1.02);
+        text-shadow:0 0 25px #ff4d6d, 0 0 45px #ff99aa;
+    }
 }
 
 .bigText{
     font-size:45px;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow{
+    from{ text-shadow:0 0 10px #ff4d6d; }
+    to{ text-shadow:0 0 30px #ff99aa, 0 0 50px #ff4d6d; }
 }
 
 .heart{
@@ -137,7 +165,7 @@ function startStory(){
             i++;
             setTimeout(next,2000);
         }else{
-            card.style.display="none"; /* ✅ HIDE FORM */
+            card.style.display="none";
             document.getElementById("pinScreen").style.display="flex";
         }
     }
@@ -200,44 +228,32 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON */
+/* NO BUTTON - FIXED (VERY CLOSE TO CARD ONLY) */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 let result=document.getElementById("result");
 
-btn.style.position="fixed";
-
-let messages=[
-    "Are you sure? 😢",
-    "That hurts 💔",
-    "Even just a little? 🥺",
-    "Please? 😭",
-    "Come on 😅"
-];
-
-let msgIndex=0;
+btn.style.position="absolute";
+btn.style.bottom="10px";
+btn.style.right="10px";
 
 btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-    result.innerText = messages[msgIndex];
-    msgIndex = (msgIndex + 1) % messages.length;
 
-    let rect = card.getBoundingClientRect();
-    let distance = 70;
+    result.innerText = "Why not? 🥺";
 
-    let positions = [
-        {x: rect.left - distance, y: rect.top},
-        {x: rect.right + distance, y: rect.top},
-        {x: rect.left, y: rect.top - distance},
-        {x: rect.left, y: rect.bottom + distance}
-    ];
+    let padding = 10;
 
-    let pos = positions[Math.floor(Math.random()*positions.length)];
+    let maxX = card.clientWidth - btn.offsetWidth - padding;
+    let maxY = card.clientHeight - btn.offsetHeight - padding;
 
-    btn.style.left = pos.x + "px";
-    btn.style.top = pos.y + "px";
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
 }
 
 /* HEARTS */
