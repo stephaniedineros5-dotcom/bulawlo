@@ -163,16 +163,15 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY */
+/* STORY (MAS MAHABA + HINDI BITIN 💖) */
 function startStory(){
     let music = document.getElementById("music");
     music.volume = 0;
     music.play().catch(()=>{});
 
-    /* fade in music */
     let vol = 0;
     let fade = setInterval(()=>{
-        if(vol < 0.5){
+        if(vol < 0.6){
             vol += 0.02;
             music.volume = vol;
         } else clearInterval(fade);
@@ -180,25 +179,26 @@ function startStory(){
 
     typeText("Hey... 😳",40);
 
-    setTimeout(()=>typeText("I’ve been meaning to tell you something...",40),2000);
-    setTimeout(()=>typeText("and I didn’t really know how to start.",40),4000);
+    setTimeout(()=>typeText("Can I tell you something I've been keeping for a while?",40),2000);
+    setTimeout(()=>typeText("I didn’t really know when it started...",40),5000);
+    setTimeout(()=>typeText("but somewhere along the way...",40),8000);
 
-    setTimeout(()=>typeText("But I guess I’ll just say it...",40),6000);
-    setTimeout(()=>typeText("you’ve become really important to me.",40),8000);
+    setTimeout(()=>typeText("you became someone really important to me.",40),11000);
+    setTimeout(()=>typeText("Like... more than just a normal friend.",40),14000);
 
-    setTimeout(()=>typeText("More than I expected, honestly.",40),10000);
-    setTimeout(()=>typeText("Talking to you just feels... right 💬",40),12000);
+    setTimeout(()=>typeText("Talking to you became my favorite part of the day 💬",40),17000);
+    setTimeout(()=>typeText("You make things feel lighter, calmer... happier ✨",40),20000);
 
-    setTimeout(()=>typeText("You make my days lighter ✨",40),14000);
-    setTimeout(()=>typeText("and somehow... better.",40),16000);
+    setTimeout(()=>typeText("And I don’t usually say things like this but...",40),23000);
+    setTimeout(()=>typeText("I’m really really glad I met you 💖",40),26000);
 
-    setTimeout(()=>typeText("And I don’t say this a lot but...",40),18000);
-    setTimeout(()=>typeText("I’m really glad I met you 💖",40),20000);
+    setTimeout(()=>typeText("Because honestly...",40),29000);
+    setTimeout(()=>typeText("life feels a little better with you in it.",40),32000);
 
-    setTimeout(showFinal,23000);
+    setTimeout(showFinal,35000);
 }
 
-/* FINAL */
+/* FINAL (MAS MALAKAS 🎬) */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -207,12 +207,14 @@ function showFinal(){
 
     let lines = [
         "So yeah...",
-        "this might be a little unexpected...",
-        "but I just wanted you to know",
-        "you matter to me 💖",
+        "this might sound random...",
+        "but I just really wanted you to know",
+        "that you matter to me 💖",
         "a lot more than you think",
         "and I hope...",
-        "you stay in my life 😊"
+        "this doesn't change anything",
+        "but instead...",
+        "makes you smile 😊"
     ];
 
     let i=0;
@@ -221,16 +223,15 @@ function showFinal(){
         if(i < lines.length){
             text.innerHTML = lines[i];
             i++;
-            setTimeout(next,2200);
+            setTimeout(next,2300);
         } else {
             setTimeout(()=>{
                 text.innerHTML = "💖 Stay with me 💖";
                 text.className = "bigText";
 
-                /* bonus line */
                 setTimeout(()=>{
                     let extra = document.createElement("p");
-                    extra.innerText = "…because I really like you 😳";
+                    extra.innerText = "because I think I'm starting to really like you 😳";
                     extra.style.marginTop = "20px";
                     document.getElementById("finalScreen").appendChild(extra);
                 },2500);
@@ -242,16 +243,12 @@ function showFinal(){
     next();
 }
 
-/* NO BUTTON (SMART 😈) */
+/* NO BUTTON (HOVER = ILAG 😈) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
 let result = document.getElementById("result");
 
-let clicks = 0;
-
-btn.addEventListener("click", (e)=>{
-    e.preventDefault();
-    clicks++;
+btn.addEventListener("mouseover", () => {
 
     let rect = card.getBoundingClientRect();
     let range = 150;
@@ -260,36 +257,8 @@ btn.addEventListener("click", (e)=>{
     btn.style.left = rect.left + (Math.random()*range*2-range) + "px";
     btn.style.top = rect.top + (Math.random()*range*2-range) + "px";
 
-    if(clicks==1) result.innerText="Are you sure? 😏";
-    else if(clicks==2) result.innerText="Really? 😂";
-    else if(clicks==3) result.innerText="You’re persistent 😳";
-    else if(clicks>=4){
-        result.innerText="You’re not catching me 😜";
-        btn.style.transform="scale(0.6)";
-    }
+    result.innerText = "Hey... why are you choosing no? 😢";
 });
-
-/* PETALS */
-setInterval(()=>{
-    let p=document.createElement("div");
-    p.className="petal";
-    p.innerHTML="🌸";
-    p.style.left=Math.random()*100+"vw";
-    p.style.fontSize=(20+Math.random()*20)+"px";
-    p.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),8000);
-},300);
-
-/* LIGHTS */
-setInterval(()=>{
-    let l=document.createElement("div");
-    l.className="light";
-    l.style.left=Math.random()*100+"vw";
-    l.style.width=l.style.height=(5+Math.random()*10)+"px";
-    document.body.appendChild(l);
-    setTimeout(()=>l.remove(),6000);
-},500);
 
 </script>
 
