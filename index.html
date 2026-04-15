@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Sayang 💖</title>
+<title>For Someone Special 💖</title>
 
 <style>
 body {
@@ -22,6 +22,7 @@ body {
 
 /* CARD */
 .card {
+    position: relative;
     background: rgba(255,255,255,0.35);
     backdrop-filter: blur(15px);
     padding: 40px;
@@ -29,6 +30,7 @@ body {
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     max-width: 360px;
+    z-index: 10;
 }
 
 /* BUTTONS */
@@ -44,10 +46,15 @@ button {
     border: none;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: scale(1.1);
 }
 
 .yes {
-    background: #ff4d6d;
+    background: linear-gradient(45deg,#ff4d6d,#ff8fab);
     color: white;
 }
 
@@ -55,53 +62,29 @@ button {
     background: #eee;
 }
 
-/* PIN SCREEN */
-#pinScreen {
-    display:none;
-    position:fixed;
+/* FINAL SCREEN */
+#finalScreen {
+    position: fixed;
     top:0;
     left:0;
     width:100%;
     height:100%;
-    background:black;
-    color:white;
+    background: radial-gradient(circle, #000 40%, #ff758c);
+    display:flex;
     justify-content:center;
     align-items:center;
     flex-direction:column;
-}
-
-/* INPUT */
-input {
-    padding:10px;
-    border-radius:10px;
-    border:none;
-    text-align:center;
-    margin-top:10px;
-}
-
-/* FINAL SCREEN */
-#finalScreen {
-    display:none;
-    position:fixed;
-    width:100%;
-    height:100%;
-    background:black;
+    opacity:0;
+    transition:1.5s;
     color:white;
-    justify-content:center;
-    align-items:center;
     text-align:center;
-    flex-direction:column;
 }
 
-/* TEXT */
-#finalText {
-    font-size: 28px;
-    max-width: 80%;
-    transition: all 1s ease;
-}
+.show { opacity:1; }
 
+/* BIG TEXT */
 .bigText {
-    font-size: 42px;
+    font-size: 45px;
     animation: pop 1s ease forwards;
 }
 
@@ -110,6 +93,32 @@ input {
     100% { transform: scale(1); opacity:1; }
 }
 
+/* PETALS */
+.petal {
+    position:absolute;
+    pointer-events:none;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% {transform:translateY(-10vh);opacity:0;}
+    50% {opacity:1;}
+    100% {transform:translateY(110vh);opacity:0;}
+}
+
+/* LIGHTS */
+.light {
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.6);
+    pointer-events:none;
+    animation: floatUp 6s linear infinite;
+}
+
+@keyframes floatUp {
+    0% {transform:translateY(100vh);}
+    100% {transform:translateY(-10vh);}
+}
 </style>
 </head>
 
@@ -118,27 +127,19 @@ input {
 <div class="container">
     <div class="card" id="card">
         <h1>Hi 💖</h1>
-        <p>Can I tell you something?</p>
+        <p>You make my days brighter 🌸</p>
+
+        <p><b>Can I tell you something? 😊</b></p>
 
         <div class="btns">
-            <button onclick="startStory()">Yes</button>
-            <button id="noBtn">No</button>
+            <button class="yes" onclick="startStory()">Yes 💖</button>
+            <button class="no" id="noBtn">No 😅</button>
         </div>
 
         <p id="result"></p>
     </div>
 </div>
 
-<!-- PIN -->
-<div id="pinScreen">
-    <h2>🔐 Enter PIN</h2>
-    <p>(Hint: our special number)</p>
-    <input type="password" id="pinInput">
-    <button onclick="checkPin()">Enter</button>
-    <p id="pinMsg"></p>
-</div>
-
-<!-- FINAL -->
 <div id="finalScreen">
     <h1 id="finalText"></h1>
 </div>
@@ -149,114 +150,146 @@ input {
 
 <script>
 
-/* STORY */
-function startStory(){
-    document.getElementById("music").play().catch(()=>{});
-    let r = document.getElementById("result");
+/* TYPE EFFECT */
+function typeText(text, delay) {
+    let i = 0;
+    let el = document.getElementById("result");
+    el.innerHTML = "";
 
-    let msgs = [
-        "Hey...",
-        "I’ve been wanting to tell you something...",
-        "and I didn’t know how...",
-        "but here I am 😳",
-        "You became important to me...",
-        "more than I expected 💖"
-    ];
-
-    let i=0;
-    function next(){
-        if(i<msgs.length){
-            r.innerText=msgs[i];
-            i++;
-            setTimeout(next,2000);
-        } else {
-            document.getElementById("pinScreen").style.display="flex";
-        }
-    }
-    next();
+    let interval = setInterval(()=>{
+        el.innerHTML += text[i];
+        i++;
+        if(i>=text.length) clearInterval(interval);
+    }, delay);
 }
 
-/* PIN */
-function checkPin(){
-    let pin = document.getElementById("pinInput").value;
-    let msg = document.getElementById("pinMsg");
+/* STORY */
+function startStory(){
+    let music = document.getElementById("music");
+    music.volume = 0;
+    music.play().catch(()=>{});
 
-    if(pin === "143"){
-        document.getElementById("pinScreen").style.display="none";
-        showFinal();
-    } else {
-        msg.innerText="Wrong... try again 😳";
-    }
+    /* fade in music */
+    let vol = 0;
+    let fade = setInterval(()=>{
+        if(vol < 0.5){
+            vol += 0.02;
+            music.volume = vol;
+        } else clearInterval(fade);
+    },200);
+
+    typeText("Hey... 😳",40);
+
+    setTimeout(()=>typeText("I’ve been meaning to tell you something...",40),2000);
+    setTimeout(()=>typeText("and I didn’t really know how to start.",40),4000);
+
+    setTimeout(()=>typeText("But I guess I’ll just say it...",40),6000);
+    setTimeout(()=>typeText("you’ve become really important to me.",40),8000);
+
+    setTimeout(()=>typeText("More than I expected, honestly.",40),10000);
+    setTimeout(()=>typeText("Talking to you just feels... right 💬",40),12000);
+
+    setTimeout(()=>typeText("You make my days lighter ✨",40),14000);
+    setTimeout(()=>typeText("and somehow... better.",40),16000);
+
+    setTimeout(()=>typeText("And I don’t say this a lot but...",40),18000);
+    setTimeout(()=>typeText("I’m really glad I met you 💖",40),20000);
+
+    setTimeout(showFinal,23000);
 }
 
 /* FINAL */
 function showFinal(){
-    let f = document.getElementById("finalScreen");
+    let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
 
-    f.style.display="flex";
+    final.classList.add("show");
 
     let lines = [
-        "Hey...",
-        "",
-        "I think this is the part where I stop hiding things.",
-        "",
-        "Because the truth is...",
-        "",
-        "I didn’t just fall a little.",
-        "",
-        "I fell for you.",
-        "",
-        "I love you. 💖",
-        "",
-        "Not just for who you are...",
-        "but for how you make me feel.",
-        "",
-        "You make everything feel lighter.",
-        "You make everything feel right.",
-        "",
-        "And if I’m being honest...",
-        "",
-        "I don’t want this to end.",
-        "",
-        "I want you.",
-        "",
-        "I want us.",
-        "",
-        "So please...",
-        "",
-        "just stay with me a little longer...",
-        "",
-        "Sayang...",
-        "",
-        "luv yah 💖"
+        "So yeah...",
+        "this might be a little unexpected...",
+        "but I just wanted you to know",
+        "you matter to me 💖",
+        "a lot more than you think",
+        "and I hope...",
+        "you stay in my life 😊"
     ];
 
     let i=0;
 
     function next(){
-        if(i<lines.length){
-            text.innerHTML=lines[i];
+        if(i < lines.length){
+            text.innerHTML = lines[i];
             i++;
-            setTimeout(next,2300);
+            setTimeout(next,2200);
         } else {
-            text.className="bigText";
+            setTimeout(()=>{
+                text.innerHTML = "💖 Stay with me 💖";
+                text.className = "bigText";
+
+                /* bonus line */
+                setTimeout(()=>{
+                    let extra = document.createElement("p");
+                    extra.innerText = "…because I really like you 😳";
+                    extra.style.marginTop = "20px";
+                    document.getElementById("finalScreen").appendChild(extra);
+                },2500);
+
+            },2000);
         }
     }
 
     next();
 }
 
-/* NO BUTTON (HOVER ILAG 😈) */
-let btn=document.getElementById("noBtn");
-let card=document.getElementById("card");
+/* NO BUTTON (SMART 😈) */
+let btn = document.getElementById("noBtn");
+let card = document.getElementById("card");
+let result = document.getElementById("result");
 
-btn.addEventListener("mouseover",()=>{
-    let rect=card.getBoundingClientRect();
-    btn.style.position="fixed";
-    btn.style.left=rect.left + Math.random()*200+"px";
-    btn.style.top=rect.top + Math.random()*200+"px";
+let clicks = 0;
+
+btn.addEventListener("click", (e)=>{
+    e.preventDefault();
+    clicks++;
+
+    let rect = card.getBoundingClientRect();
+    let range = 150;
+
+    btn.style.position = "fixed";
+    btn.style.left = rect.left + (Math.random()*range*2-range) + "px";
+    btn.style.top = rect.top + (Math.random()*range*2-range) + "px";
+
+    if(clicks==1) result.innerText="Are you sure? 😏";
+    else if(clicks==2) result.innerText="Really? 😂";
+    else if(clicks==3) result.innerText="You’re persistent 😳";
+    else if(clicks>=4){
+        result.innerText="You’re not catching me 😜";
+        btn.style.transform="scale(0.6)";
+    }
 });
+
+/* PETALS */
+setInterval(()=>{
+    let p=document.createElement("div");
+    p.className="petal";
+    p.innerHTML="🌸";
+    p.style.left=Math.random()*100+"vw";
+    p.style.fontSize=(20+Math.random()*20)+"px";
+    p.style.animationDuration=(5+Math.random()*5)+"s";
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),8000);
+},300);
+
+/* LIGHTS */
+setInterval(()=>{
+    let l=document.createElement("div");
+    l.className="light";
+    l.style.left=Math.random()*100+"vw";
+    l.style.width=l.style.height=(5+Math.random()*10)+"px";
+    document.body.appendChild(l);
+    setTimeout(()=>l.remove(),6000);
+},500);
 
 </script>
 
