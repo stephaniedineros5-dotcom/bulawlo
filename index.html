@@ -29,12 +29,6 @@ body{
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
     animation:fadeIn 1.5s ease;
-    transition:0.4s;
-}
-
-.card:hover{
-    transform:scale(1.03);
-    box-shadow:0 20px 60px rgba(0,0,0,0.3);
 }
 
 @keyframes fadeIn{
@@ -42,6 +36,12 @@ body{
     to{opacity:1;transform:translateY(0);}
 }
 
+.card:hover{
+    transform:scale(1.03);
+    transition:0.3s;
+}
+
+/* BUTTONS */
 button{
     padding:12px 22px;
     border-radius:20px;
@@ -80,7 +80,6 @@ button:hover{
     text-align:center;
 }
 
-/* FINAL TEXT (NO MORE TYPING) */
 #finalText{
     font-size:28px;
     max-width:80%;
@@ -94,7 +93,6 @@ button:hover{
     to{opacity:1;transform:scale(1);}
 }
 
-/* GLOW */
 .bigText{
     font-size:45px;
     animation: glow 1.5s infinite alternate;
@@ -105,6 +103,7 @@ button:hover{
     to{ text-shadow:0 0 30px #ff99aa, 0 0 50px #ff4d6d; }
 }
 
+/* HEARTS */
 .heart{
     position:absolute;
     animation:floatUp 6s linear infinite;
@@ -125,7 +124,7 @@ button:hover{
         <p>You make my days brighter 🌸</p>
 
         <p><b>Can I make you smile today? 😊</b></p>
-        
+
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
 
@@ -189,7 +188,7 @@ function checkPin(){
     }
 }
 
-/* FINAL (SIMPLE FADE IN TEXT) */
+/* FINAL */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
@@ -217,10 +216,11 @@ function showFinal(){
     },2000);
 }
 
-let btn = document.getElementById("noBtn");
-let card = document.getElementById("card");
+/* NO BUTTON (FIXED - NO ESCAPE, ONLY INSIDE CARD) */
+let btn=document.getElementById("noBtn");
+let card=document.getElementById("card");
 
-let messages = [
+let messages=[
     "Are you sure? 😢",
     "That’s kinda sad 💔",
     "Even just a little? 🥺",
@@ -228,26 +228,22 @@ let messages = [
     "Come on 😅"
 ];
 
-let msgIndex = 0;
+let msgIndex=0;
 
-// IMPORTANT: make card relative positioning (safe area)
-card.style.position = "relative";
-btn.style.position = "absolute";
-
-// initial safe position
-btn.style.bottom = "15px";
-btn.style.right = "15px";
+// important: keep inside card
+btn.style.position="absolute";
+btn.style.bottom="15px";
+btn.style.right="15px";
 
 btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
-    let result = document.getElementById("result");
 
-    result.innerText = messages[msgIndex];
+    document.getElementById("result").innerText = messages[msgIndex];
     msgIndex = (msgIndex + 1) % messages.length;
 
-    let padding = 20;
+    let padding = 15;
 
     let maxX = card.clientWidth - btn.offsetWidth - padding;
     let maxY = card.clientHeight - btn.offsetHeight - padding;
@@ -257,7 +253,6 @@ function moveButton(){
 
     btn.style.left = x + "px";
     btn.style.top = y + "px";
-}
 }
 
 /* HEARTS */
