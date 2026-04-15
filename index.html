@@ -1,11 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For Sayang 💖</title>
+<title>For Someone Special 💖</title>
 
 <style>
+
+/* BACKGROUND */
 body {
     margin: 0;
     font-family: 'Segoe UI', cursive;
@@ -24,15 +25,20 @@ body {
 /* CARD */
 .card {
     position: relative;
-    background: rgba(255,255,255,0.35);
+    background: rgba(255,255,255,0.3);
     backdrop-filter: blur(15px);
     padding: 40px;
     border-radius: 25px;
     text-align: center;
     box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    max-width: 360px;
+    max-width: 350px;
+    position: relative;
     z-index: 10;
 }
+
+/* TEXT */
+h1 { color: #ff4d6d; }
+p { color: #333; }
 
 /* BUTTONS */
 .btns {
@@ -61,6 +67,7 @@ button:hover {
 
 .no {
     background: #eee;
+    position: relative;
 }
 
 /* FINAL SCREEN */
@@ -70,7 +77,7 @@ button:hover {
     left:0;
     width:100%;
     height:100%;
-    background: radial-gradient(circle, #000 40%, #ff758c);
+    background: linear-gradient(135deg,#ffafbd,#ffc3a0);
     display:flex;
     justify-content:center;
     align-items:center;
@@ -81,51 +88,40 @@ button:hover {
     text-align:center;
 }
 
-/* TEXT STYLE */
-#finalText {
-    font-size: 28px;
-    max-width: 80%;
-    transition: all 1s ease;
-}
-
 .show { opacity:1; }
 
-.bigText {
-    font-size: 45px;
-    animation: pop 1s ease forwards;
+/* GLOW */
+.glow {
+    animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+    from {text-shadow:0 0 10px #fff;}
+    to {text-shadow:0 0 25px #fff;}
 }
 
-@keyframes pop {
-    0% { transform: scale(0); opacity:0; }
-    100% { transform: scale(1); opacity:1; }
+.flower, .light {
+    position: absolute;
+    pointer-events: none; /* 🔥 eto yung fix */
 }
-
-/* PETALS */
-.petal {
-    position:absolute;
-    pointer-events:none;
-    animation: fall linear infinite;
 }
-
 @keyframes fall {
-    0% {transform:translateY(-10vh);opacity:0;}
-    50% {opacity:1;}
-    100% {transform:translateY(110vh);opacity:0;}
+    0% { transform: translateY(-10vh); opacity:0; }
+    50% { opacity:1; }
+    100% { transform: translateY(110vh); opacity:0; }
 }
 
 /* LIGHTS */
 .light {
-    position:absolute;
-    border-radius:50%;
-    background:rgba(255,255,255,0.6);
-    pointer-events:none;
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
     animation: floatUp 6s linear infinite;
 }
-
 @keyframes floatUp {
-    0% {transform:translateY(100vh);}
-    100% {transform:translateY(-10vh);}
+    0% {transform: translateY(100vh);}
+    100% {transform: translateY(-10vh);}
 }
+
 </style>
 </head>
 
@@ -135,6 +131,7 @@ button:hover {
     <div class="card" id="card">
         <h1>Hi 💖</h1>
         <p>You make my days brighter 🌸</p>
+
         <p><b>Can I tell you something? 😊</b></p>
 
         <div class="btns">
@@ -146,17 +143,18 @@ button:hover {
     </div>
 </div>
 
+<!-- FINAL -->
 <div id="finalScreen">
-    <h1 id="finalText"></h1>
+    <h1 id="finalText" class="glow"></h1>
 </div>
 
+<!-- MUSIC -->
 <audio id="music" loop>
 <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_115b9b6d9b.mp3">
 </audio>
 
 <script>
 
-/* TYPE TEXT */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
@@ -169,35 +167,31 @@ function typeText(text, delay) {
     }, delay);
 }
 
-/* STORY */
+/* STORY (MAS MAHABA NA 💖) */
 function startStory(){
-    let music = document.getElementById("music");
-    music.volume = 0;
-    music.play().catch(()=>{});
+    document.getElementById("music").play().catch(()=>{});
 
-    let vol = 0;
-    let fade = setInterval(()=>{
-        if(vol < 0.6){
-            vol += 0.02;
-            music.volume = vol;
-        } else clearInterval(fade);
-    },200);
+    typeText("Wait... 😳",40);
 
-    typeText("Hey... 😳",40);
+    setTimeout(()=>typeText("Before anything else...",40),2000);
+    setTimeout(()=>typeText("Can I be honest with you for a bit?",40),4000);
+    setTimeout(()=>typeText("I didn’t expect we’d get this close...",40),6000);
+    setTimeout(()=>typeText("but somehow, here we are 😊",40),8000);
 
-    setTimeout(()=>typeText("Can I tell you something I've been keeping for a while?",40),2000);
-    setTimeout(()=>typeText("I didn’t really know when it started...",40),5000);
-    setTimeout(()=>typeText("but somewhere along the way...",40),8000);
-    setTimeout(()=>typeText("you became someone really important to me.",40),11000);
-    setTimeout(()=>typeText("Talking to you became my favorite part of the day 💬",40),14000);
-    setTimeout(()=>typeText("You make things feel lighter... happier ✨",40),17000);
-    setTimeout(()=>typeText("And honestly...",40),20000);
-    setTimeout(()=>typeText("I’m really glad I met you 💖",40),23000);
+    setTimeout(()=>typeText("And I’m actually really glad...",40),10000);
+    setTimeout(()=>typeText("because talking to you feels different 💬",40),12000);
+    setTimeout(()=>typeText("like... lighter, easier, happier ✨",40),14000);
 
-    setTimeout(showFinal,26000);
+    setTimeout(()=>typeText("You became someone I look forward to talking to",40),16000);
+    setTimeout(()=>typeText("and I didn’t even notice when it started 😳",40),18000);
+
+    setTimeout(()=>typeText("So yeah...",40),20000);
+    setTimeout(()=>typeText("I just wanted you to know that 💖",40),22000);
+
+    setTimeout(showFinal,24000);
 }
 
-/* FINAL CINEMATIC */
+/* FINAL CINEMATIC (HINDI NA BITIN 🎬) */
 function showFinal(){
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
@@ -205,98 +199,75 @@ function showFinal(){
     final.classList.add("show");
 
     let lines = [
-        "Sayang...",
-        "I know this might be unexpected...",
-        "",
-        "but I’ve been wanting to tell you this for a while now.",
-        "",
-        "You became someone really important to me.",
-        "",
-        "You make my days better.",
-        "You make me smile without trying.",
-        "",
-        "And I don’t know if you feel the same way...",
-        "",
-        "but I just want to be honest.",
-        "",
-        "So here it is...",
-        "",
-        "Sayang...",
-        "",
-        "I love you. 💖",
-        "",
-        "And if it’s okay with you...",
-        "I’d love to stay by your side for a long time 😊"
+        "And maybe this is random...",
+        "but I’m really grateful I met you 💖",
+        "you became someone important to me",
+        "more than you probably realize 😳",
+        "and honestly...",
+        "I don’t want to lose this",
+        "I don’t want to lose you",
+        "so if it’s okay...",
+        "stay with me a little longer? 😊"
     ];
 
-    let i = 0;
+    let i=0;
 
-    function showNext(){
-        if(i < lines.length){
-
-            if(lines[i] === ""){
-                text.innerHTML = "";
-            } else {
-                text.innerHTML = lines[i];
-                text.style.opacity = 0;
-                text.style.transform = "translateY(20px)";
-
-                setTimeout(()=>{
-                    text.style.opacity = 1;
-                    text.style.transform = "translateY(0)";
-                },100);
-            }
-
+    function next(){
+        if(i<lines.length){
+            text.innerHTML=lines[i];
             i++;
-            setTimeout(showNext, 2500);
-        }
-        else {
-            setTimeout(()=>{
-                text.innerHTML = "💖 Stay with me, Sayang 💖";
-                text.className = "bigText";
-            },2000);
+            setTimeout(next,2500);
         }
     }
 
-    showNext();
+    next();
 }
 
-/* NO BUTTON HOVER 😈 */
+/* NO BUTTON (LEVELING SYSTEM 😈) */
 let btn = document.getElementById("noBtn");
 let card = document.getElementById("card");
+let result = document.getElementById("result");
 
-btn.addEventListener("mouseover", () => {
-    let rect = card.getBoundingClientRect();
-    let range = 150;
+let clicks = 0;
 
-    btn.style.position = "fixed";
-    btn.style.left = rect.left + (Math.random()*range*2-range) + "px";
-    btn.style.top = rect.top + (Math.random()*range*2-range) + "px";
+btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    clicks++;
+
+    let maxX = card.clientWidth - btn.offsetWidth;
+    let maxY = card.clientHeight - btn.offsetHeight;
+
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+
+    /* personality 😏 */
+    if(clicks == 1){
+        result.innerText = "No? sure ka? 😏";
+    }
+    else if(clicks == 2){
+        result.innerText = "Grabe ka naman 😂";
+    }
+    else if(clicks == 3){
+        result.innerText = "Try mo pa ulit... di mo yan mahuhuli 😈";
+    }
+    else if(clicks == 4){
+        result.innerText = "Okay, medyo determined ka ah 😳";
+    }
+    else if(clicks == 5){
+        result.innerText = "Sige... pahihirapan na kita 😜";
+        btn.style.transform = "scale(0.7)";
+    }
+    else if(clicks >= 6){
+        result.innerText = "Ayan na... di mo na talaga yan ma-click 😂";
+        btn.style.transform = "scale(0.5)";
+    }
 });
-
-/* PETALS */
-setInterval(()=>{
-    let p=document.createElement("div");
-    p.className="petal";
-    p.innerHTML="🌸";
-    p.style.left=Math.random()*100+"vw";
-    p.style.fontSize=(20+Math.random()*20)+"px";
-    p.style.animationDuration=(5+Math.random()*5)+"s";
-    document.body.appendChild(p);
-    setTimeout(()=>p.remove(),8000);
-},300);
-
-/* LIGHTS */
-setInterval(()=>{
-    let l=document.createElement("div");
-    l.className="light";
-    l.style.left=Math.random()*100+"vw";
-    l.style.width=l.style.height=(5+Math.random()*10)+"px";
-    document.body.appendChild(l);
-    setTimeout(()=>l.remove(),6000);
-},500);
-
 </script>
 
 </body>
 </html>
+cdn.pixabay.co
