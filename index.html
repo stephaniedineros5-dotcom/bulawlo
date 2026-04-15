@@ -12,6 +12,7 @@ body{
     overflow:hidden;
 }
 
+/* CENTER */
 .container{
     display:flex;
     justify-content:center;
@@ -19,6 +20,7 @@ body{
     height:100vh;
 }
 
+/* CARD */
 .card{
     position:relative;
     background:rgba(255,255,255,0.85);
@@ -36,11 +38,6 @@ body{
     to{opacity:1;transform:translateY(0);}
 }
 
-.card:hover{
-    transform:scale(1.03);
-    transition:0.3s;
-}
-
 /* BUTTONS */
 button{
     padding:12px 22px;
@@ -52,9 +49,7 @@ button{
     transition:0.3s;
 }
 
-button:hover{
-    transform:scale(1.05);
-}
+button:hover{ transform:scale(1.05); }
 
 .yes{
     background:#ff4d6d;
@@ -62,9 +57,7 @@ button:hover{
     box-shadow:0 0 10px #ff4d6d;
 }
 
-.no{
-    background:#ddd;
-}
+.no{ background:#ddd; }
 
 /* SCREENS */
 #pinScreen, #finalScreen{
@@ -78,21 +71,16 @@ button:hover{
     align-items:center;
     flex-direction:column;
     text-align:center;
+    animation:fadeIn 0.8s;
 }
 
 #finalText{
     font-size:28px;
     max-width:80%;
     line-height:1.6;
-    opacity:0;
-    animation:fadeInText 2s forwards;
 }
 
-@keyframes fadeInText{
-    from{opacity:0;transform:scale(0.95);}
-    to{opacity:1;transform:scale(1);}
-}
-
+/* GLOW TEXT */
 .bigText{
     font-size:45px;
     animation: glow 1.5s infinite alternate;
@@ -143,10 +131,24 @@ button:hover{
     <h1 id="finalText"></h1>
 </div>
 
+<!-- 🔥 MUSIC -->
+<audio id="music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
+
+/* 🔊 MUSIC */
+function playMusic(){
+    let music = document.getElementById("music");
+    music.volume = 0.5;
+    music.play().catch(()=>{});
+}
 
 /* STORY */
 function startStory(){
+    playMusic();
+
     let r=document.getElementById("result");
 
     let msgs=[
@@ -180,79 +182,48 @@ function checkPin(){
         showFinal();
     }else{
         attempts++;
-        if(attempts==1){
-            document.getElementById("hint").innerText="Hint: 1 = I, 4 = Love, 3 = You 😳";
-        }else{
-            alert("Try again 😅");
-        }
+        document.getElementById("hint").innerText="Try again 😅";
     }
 }
 
-/* FINAL */
+/* FINAL (TYPE EFFECT 💖) */
 function showFinal(){
     let f=document.getElementById("finalScreen");
     let text=document.getElementById("finalText");
 
     f.style.display="flex";
 
-    text.innerHTML = `
-    Hey...<br><br>
-    I’ve been wanting to say this for a while...<br><br>
-    You’ve become someone really important to me.<br>
-    You make my days better.<br>
-    You make me smile.<br><br>
-    And I don’t want to hide it anymore...<br><br>
-    I love you 💖<br><br>
-    Not just a little...<br>
-    But more than I expected.<br><br>
-    So please...<br>
-    Stay with me a little longer...<br><br>
-    Don’t go...<br><br>
-    I love you 💖
-    `;
+    let message = "I love you 💖";
+    let i=0;
 
-    setTimeout(()=>{
-        text.classList.add("bigText");
-    },2000);
+    function type(){
+        if(i < message.length){
+            text.innerHTML += message.charAt(i);
+            i++;
+            setTimeout(type,100);
+        }else{
+            text.classList.add("bigText");
+        }
+    }
+
+    type();
 }
 
-/* NO BUTTON (FIXED - NO ESCAPE, ONLY INSIDE CARD) */
+/* NO BUTTON */
 let btn=document.getElementById("noBtn");
 let card=document.getElementById("card");
 
-let messages=[
-    "Are you sure? 😢",
-    "That’s kinda sad 💔",
-    "Even just a little? 🥺",
-    "Please? 😭",
-    "Come on 😅"
-];
-
-let msgIndex=0;
-
-// important: keep inside card
 btn.style.position="absolute";
-btn.style.bottom="15px";
-btn.style.right="15px";
 
 btn.addEventListener("mouseover", moveButton);
 btn.addEventListener("touchstart", moveButton);
 
 function moveButton(){
+    let maxX = card.clientWidth - btn.offsetWidth;
+    let maxY = card.clientHeight - btn.offsetHeight;
 
-    document.getElementById("result").innerText = messages[msgIndex];
-    msgIndex = (msgIndex + 1) % messages.length;
-
-    let padding = 15;
-
-    let maxX = card.clientWidth - btn.offsetWidth - padding;
-    let maxY = card.clientHeight - btn.offsetHeight - padding;
-
-    let x = Math.random() * maxX;
-    let y = Math.random() * maxY;
-
-    btn.style.left = x + "px";
-    btn.style.top = y + "px";
+    btn.style.left = Math.random()*maxX + "px";
+    btn.style.top = Math.random()*maxY + "px";
 }
 
 /* HEARTS */
