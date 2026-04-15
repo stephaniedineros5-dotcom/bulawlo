@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+   <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -22,6 +23,7 @@ body {
 
 /* Card */
 .card {
+    position: relative;
     background: rgba(255,255,255,0.95);
     padding: 40px;
     border-radius: 25px;
@@ -99,7 +101,7 @@ input {
     50%{transform:translateY(-10px);}
 }
 
-/* HEARTS (from first code) */
+/* HEARTS */
 .heart {
     position: absolute;
     color: #ff4d6d;
@@ -112,7 +114,7 @@ input {
     100% {transform: translateY(-10vh); opacity:0;}
 }
 
-/* FLOWERS (added) */
+/* FLOWERS */
 .flower {
     position: absolute;
     animation: fall 8s linear infinite;
@@ -123,7 +125,7 @@ input {
     100% {transform: translateY(110vh);}
 }
 
-/* CONFETTI (added) */
+/* CONFETTI */
 .confetti {
     position: absolute;
     width: 10px;
@@ -171,24 +173,24 @@ input {
 
 let noClicks = 0;
 
-/* typing */
+/* typing effect */
 function typeText(text, delay) {
     let i = 0;
     let el = document.getElementById("result");
     el.innerHTML = "";
 
-    let interval = setInterval(()=>{
+    let interval = setInterval(() => {
         el.innerHTML += text[i];
         i++;
-        if(i>=text.length) clearInterval(interval);
+        if (i >= text.length) clearInterval(interval);
     }, delay);
 }
 
 /* STORY */
-function startStory(){
+function startStory() {
     document.getElementById("music").play().catch(()=>{});
 
-    typeText("Wait... 😳",40);
+    typeText("Wait... 😳", 40);
 
     setTimeout(()=>typeText("I just want to say something...",40),2000);
     setTimeout(()=>typeText("I enjoy talking to you 💬",40),4000);
@@ -204,25 +206,26 @@ function startStory(){
 /* PIN */
 let attempts = 0;
 
-function checkPin(){
+function checkPin() {
     let val = document.getElementById("pin").value;
 
-    if(val==="143"){
+    if (val === "143") {
         document.getElementById("pinScreen").classList.remove("show");
         showFinal();
     } else {
         attempts++;
 
-        if(attempts==1){
-            document.getElementById("hint").innerText="Hint: 1=I 4=Love 3=You 😳";
+        if (attempts == 1) {
+            document.getElementById("hint").innerText =
+                "Hint: 1=I 4=Love 3=You 😳";
         } else {
             alert("Try again 😏");
         }
     }
 }
 
-/* FINAL */
-function showFinal(){
+/* FINAL EMOTIONAL MESSAGE */
+function showFinal() {
     let final = document.getElementById("finalScreen");
     let text = document.getElementById("finalText");
 
@@ -231,19 +234,24 @@ function showFinal(){
     let lines = [
         "So yeah...",
         "I really appreciate you 💖",
-        "Like... a lot 😳",
-        "And I hope...",
-        "you stay in my life 😊"
+        "Not just in a normal way...",
+        "but in a way I can’t even explain properly 😳",
+        "Like... you became part of my peace.",
+        "And I don’t say that to just anyone.",
+        "I hope you stay in my life 😊",
+        "even if things get complicated...",
+        "even if days get hard...",
+        "I’ll still be grateful I met you 💖"
     ];
 
-    let i=0;
+    let i = 0;
 
-    function nextLine(){
-        if(i<lines.length){
+    function nextLine() {
+        if (i < lines.length) {
             text.innerHTML = lines[i];
             text.classList.add("glow");
             i++;
-            setTimeout(nextLine,2000);
+            setTimeout(nextLine, 2000);
         } else {
             launchEffects();
         }
@@ -252,57 +260,62 @@ function showFinal(){
     nextLine();
 }
 
-/* NO BUTTON */
+/* NO BUTTON FIXED INSIDE CARD */
 let btn = document.getElementById("noBtn");
+let card = document.querySelector(".card");
 
-btn.addEventListener("mouseover",()=>{
+btn.addEventListener("mouseover", () => {
     noClicks++;
 
-    let x = Math.random() * (window.innerWidth - btn.offsetWidth);
-    let y = Math.random() * (window.innerHeight - btn.offsetHeight);
+    let rect = card.getBoundingClientRect();
 
-    btn.style.position="fixed";
-    btn.style.left=x+"px";
-    btn.style.top=y+"px";
+    let maxX = rect.width - btn.offsetWidth - 20;
+    let maxY = rect.height - btn.offsetHeight - 20;
 
-    if(noClicks==3){
-        document.getElementById("result").innerText="You really trying to press no? 😏";
+    let x = Math.random() * maxX;
+    let y = Math.random() * maxY;
+
+    btn.style.position = "absolute";
+    btn.style.left = x + "px";
+    btn.style.top = y + "px";
+
+    if (noClicks == 3) {
+        document.getElementById("result").innerText =
+            "You really trying to press no? 😏";
     }
 });
 
-/* COMBINED EFFECTS (hearts + flowers + confetti) */
-function launchEffects(){
+/* HEARTS + FLOWERS + CONFETTI */
+function launchEffects() {
 
-    /* hearts */
-    setInterval(()=>{
-        let h=document.createElement("div");
-        h.className="heart";
-        h.innerHTML="💖";
-        h.style.left=Math.random()*100+"vw";
-        h.style.fontSize=(20+Math.random()*20)+"px";
+    setInterval(() => {
+        let h = document.createElement("div");
+        h.className = "heart";
+        h.innerHTML = "💖";
+        h.style.left = Math.random() * 100 + "vw";
+        h.style.fontSize = (20 + Math.random() * 20) + "px";
         document.body.appendChild(h);
-        setTimeout(()=>h.remove(),6000);
-    },200);
+        setTimeout(() => h.remove(), 6000);
+    }, 200);
 
-    /* flowers */
-    setInterval(()=>{
-        let f=document.createElement("div");
-        f.className="flower";
-        f.innerHTML="🌸";
-        f.style.left=Math.random()*100+"vw";
-        f.style.fontSize=(20+Math.random()*20)+"px";
+    setInterval(() => {
+        let f = document.createElement("div");
+        f.className = "flower";
+        f.innerHTML = "🌸";
+        f.style.left = Math.random() * 100 + "vw";
+        f.style.fontSize = (20 + Math.random() * 20) + "px";
         document.body.appendChild(f);
-        setTimeout(()=>f.remove(),8000);
-    },600);
+        setTimeout(() => f.remove(), 8000);
+    }, 600);
 
-    /* confetti */
-    for(let i=0;i<80;i++){
-        let c=document.createElement("div");
-        c.className="confetti";
-        c.style.left=Math.random()*100+"vw";
-        c.style.background=["#fff","#ff4d6d","#ffd1dc"][Math.floor(Math.random()*3)];
+    for (let i = 0; i < 80; i++) {
+        let c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background =
+            ["#fff","#ff4d6d","#ffd1dc"][Math.floor(Math.random()*3)];
         document.body.appendChild(c);
-        setTimeout(()=>c.remove(),3000);
+        setTimeout(() => c.remove(), 3000);
     }
 }
 
