@@ -26,7 +26,11 @@ body{
     text-align:center;
     box-shadow:0 10px 40px rgba(0,0,0,0.2);
     max-width:350px;
+    animation: float 3s ease-in-out infinite;
 }
+
+h1 { color: #ff4d6d; }
+p { color: #444; }
 
 button{
     padding:10px 20px;
@@ -78,11 +82,15 @@ button{
 
 <div class="container">
     <div class="card" id="card">
-        <h1>Hi 💖</h1>
+        <h1>Hi, Bulawlo 💖</h1>
         <p>You make my days brighter 🌸</p>
 
+        <p><b>Can I make you smile today? 😊</b></p>
+        
         <button class="yes" onclick="startStory()">Yes 💖</button>
         <button class="no" id="noBtn">No 😅</button>
+
+        <p>You really picking that </p>
 
         <p id="result"></p>
     </div>
